@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObjects.Responses
+namespace BusinessObjects.Requests
 {
-    public class LoginResponseModel
+    public class BaseUpdateRequest
     {
+        public Guid Id { get; set; }
     }
 }

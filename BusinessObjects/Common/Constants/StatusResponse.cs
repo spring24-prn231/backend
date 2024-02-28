@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObjects.Shared
+namespace BusinessObjects.Common.Constants
 {
     public enum StatusResponse
     {
         Success,
-        Fail
+        Fail,
+        Unauthorized,
+        Forbidden,
+        NotFound,
+        BadRequest
     }
 }

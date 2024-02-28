@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class Menu
+public partial class Menu : BaseModel
 {
-    public Guid Id { get; set; }
 
     public Guid? DishId { get; set; }
 

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class Slot
+public partial class Slot : BaseModel
 {
-    public Guid Id { get; set; }
 
     public Guid? RoomId { get; set; }
 
