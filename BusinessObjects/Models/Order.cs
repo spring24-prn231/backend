@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class Order
+public partial class Order : BaseModel
 {
-    public Guid Id { get; set; }
 
-    public Guid ServiceId { get; set; }
+    public Guid? ServiceId { get; set; }
 
-    public Guid SlotId { get; set; }
+    public Guid? SlotId { get; set; }
 
-    public Guid UserId { get; set; }
-    public Guid StaffId { get; set; }
+    public Guid? UserId { get; set; }
+    public Guid? StaffId { get; set; }
 
     public DateTime CreateDate { get; set; }
 
@@ -28,12 +27,12 @@ public partial class Order
 
     public virtual ICollection<PartyPlan> PartyPlans { get; set; } = new List<PartyPlan>();
 
-    public virtual Service Service { get; set; } = null!;
+    public virtual Service? Service { get; set; }
 
-    public virtual Slot Slot { get; set; } = null!;
+    public virtual Slot? Slot { get; set; }
 
-    public virtual ApplicationUser User { get; set; } = null!;
-    public virtual ApplicationUser Staff { get; set; } = null!;
+    public virtual ApplicationUser? User { get; set; }
+    public virtual ApplicationUser? Staff { get; set; }
 
     public virtual ICollection<Voucher> Vouchers { get; set; } = new List<Voucher>();
 }

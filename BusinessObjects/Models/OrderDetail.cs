@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class OrderDetail
+public partial class OrderDetail : BaseModel
 {
-    public Guid Id { get; set; }
 
     public Guid? OrderId { get; set; }
 

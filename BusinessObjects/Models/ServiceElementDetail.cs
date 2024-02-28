@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class ServiceElementDetail
+public partial class ServiceElementDetail : BaseModel
 {
-    public Guid Id { get; set; }
 
     public Guid ServiceElementId { get; set; }
 

@@ -53,7 +53,6 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
     public virtual DbSet<Voucher> Vouchers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer(GetConnectionString());
 
     private string GetConnectionString()
@@ -75,6 +74,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Deposit");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.Value).HasColumnType("decimal(20, 1)");
 
             entity.HasOne(d => d.Order).WithMany(p => p.Deposits)
@@ -91,6 +91,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
 
             entity.HasOne(d => d.DishType).WithMany(p => p.Dishes)
                 .HasForeignKey(d => d.DishTypeId)
@@ -106,6 +107,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
         });
 
         modelBuilder.Entity<ElementType>(entity =>
@@ -116,6 +118,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
         });
 
         modelBuilder.Entity<Feedback>(entity =>
@@ -129,6 +132,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.HasOne(d => d.Order).WithMany(p => p.Feedbacks)
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK__Feedback__OrderI__01142BA1");
@@ -141,6 +145,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Menu");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
 
             entity.HasOne(d => d.Dish).WithMany(p => p.Menus)
                 .HasForeignKey(d => d.DishId)
@@ -158,10 +163,15 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Order");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.CreateDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Total).HasColumnType("decimal(20, 1)");
+            entity.Property(e => e.SlotId).IsRequired(false);
+            entity.Property(e => e.UserId).IsRequired(false);
+            entity.Property(e => e.StaffId).IsRequired(false);
+            entity.Property(e => e.ServiceId).IsRequired(false);
 
             entity.HasOne(d => d.Service).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.ServiceId)
@@ -190,6 +200,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.Amount).HasColumnType("decimal(20, 1)");
             entity.Property(e => e.Cost).HasColumnType("decimal(20, 1)");
             entity.Property(e => e.Price).HasColumnType("decimal(20, 1)");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.Type).HasMaxLength(100);
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
@@ -206,6 +217,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.TimeEnd).HasColumnType("datetime");
             entity.Property(e => e.TimeStart).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
 
             entity.HasOne(d => d.Order).WithMany(p => p.PartyPlans)
                 .HasForeignKey(d => d.OrderId)
@@ -219,6 +231,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Room");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
 
             entity.HasOne(d => d.RoomType).WithMany(p => p.Rooms)
                 .HasForeignKey(d => d.RoomTypeId)
@@ -233,6 +246,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("RoomType");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
         });
@@ -244,6 +258,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Service");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -261,6 +276,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("ServiceElement");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
 
             entity.HasOne(d => d.ElementType).WithMany(p => p.ServiceElements)
                 .HasForeignKey(d => d.ElementTypeId)
@@ -275,6 +291,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("ServiceElementDetail");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
 
             entity.HasOne(d => d.ServiceElement).WithMany(p => p.ServiceElementDetails)
                 .HasForeignKey(d => d.ServiceElementId)
@@ -294,6 +311,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Slot");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.FromHour)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -313,6 +331,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Voucher");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.Code)
                 .HasMaxLength(16)
                 .IsUnicode(false);
