@@ -1,19 +1,12 @@
 using AutoFilterer.Swagger;
 using AutoMapper.Internal;
-using BirthdayBlitzAPI.Common;
-using BusinessObjects.Common;
+using BirthdayBlitzAPI.Common.Extensions;
 using BusinessObjects.Models;
-using DataAccessObjects;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-using Repositories;
-using Services.Implements;
-using Services.Interfaces;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,11 +27,7 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
 });
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddScoped(typeof(IBaseDAO<>), typeof(BaseDAO<>));
-builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
-builder.Services.AddScoped<IFeedbackService, FeedbackService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddDI();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
