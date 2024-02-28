@@ -101,6 +101,11 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.Property<decimal?>("Value")
                         .HasColumnType("decimal(20, 1)");
 
@@ -133,6 +138,11 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.HasKey("Id")
                         .HasName("PK__Dish__3214EC0718721564");
 
@@ -152,6 +162,11 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.HasKey("Id")
                         .HasName("PK__DishType__3214EC07541A8E5A");
 
@@ -168,6 +183,11 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id")
                         .HasName("PK__ElementT__3214EC0730B40F77");
@@ -196,6 +216,11 @@ namespace BusinessObjects.Migrations
                     b.Property<byte?>("RatingStar")
                         .HasColumnType("tinyint");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.HasKey("Id")
                         .HasName("PK__Feedback__3214EC070567188F");
 
@@ -216,6 +241,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid?>("ServiceId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id")
                         .HasName("PK__Menu__3214EC0733AC5CC0");
@@ -242,19 +272,24 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<Guid>("ServiceId")
+                    b.Property<Guid?>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SlotId")
+                    b.Property<Guid?>("SlotId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("StaffId")
+                    b.Property<Guid?>("StaffId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(20, 1)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
@@ -290,6 +325,11 @@ namespace BusinessObjects.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(20, 1)");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.Property<string>("Type")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -317,6 +357,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.Property<DateTime?>("TimeEnd")
                         .HasColumnType("datetime");
@@ -348,6 +393,11 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("RoomTypeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.HasKey("Id")
                         .HasName("PK__Room__3214EC074554CFB0");
 
@@ -370,6 +420,11 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id")
                         .HasName("PK__RoomType__3214EC076B2D2DCB");
@@ -394,6 +449,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid>("RoomTypeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier")
@@ -423,6 +483,11 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
+
                     b.HasKey("Id")
                         .HasName("PK__ServiceE__3214EC07FF86A370");
 
@@ -443,6 +508,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id")
                         .HasName("PK__ServiceE__3214EC0775FBEC38");
@@ -469,6 +539,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.Property<string>("ToHour")
                         .IsRequired()
@@ -507,6 +582,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id")
                         .HasName("PK__Voucher__3214EC07B7349123");
@@ -700,24 +780,20 @@ namespace BusinessObjects.Migrations
                     b.HasOne("BusinessObjects.Models.Service", "Service")
                         .WithMany("Orders")
                         .HasForeignKey("ServiceId")
-                        .IsRequired()
                         .HasConstraintName("FK__Order__ServiceId__6FE99F9F");
 
                     b.HasOne("BusinessObjects.Models.Slot", "Slot")
                         .WithMany("Orders")
                         .HasForeignKey("SlotId")
-                        .IsRequired()
                         .HasConstraintName("FK__Order__SlotId__70DDC3D8");
 
                     b.HasOne("BusinessObjects.Models.ApplicationUser", "Staff")
                         .WithMany("StaffOrders")
-                        .HasForeignKey("StaffId")
-                        .IsRequired();
+                        .HasForeignKey("StaffId");
 
                     b.HasOne("BusinessObjects.Models.ApplicationUser", "User")
                         .WithMany("UserOrders")
-                        .HasForeignKey("UserId")
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Service");
 
