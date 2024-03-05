@@ -12,8 +12,6 @@ namespace BirthdayBlitzAPI.Validators
         public CreateElementTypeValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty()
-                .WithMessage("Tên không được để trống!")
                 .MaximumLength(100)
                 .WithMessage("Tên không được quá 100 ký tự!");
         }
