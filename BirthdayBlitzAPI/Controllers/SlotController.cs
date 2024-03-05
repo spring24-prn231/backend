@@ -1,6 +1,7 @@
 ﻿using BirthdayBlitzAPI.Validators;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
+using BusinessObjects.Models;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -24,14 +25,6 @@ namespace BirthdayBlitzAPI.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] CreateSlotRequest request)
         {
-            var validate = new CreateSlotValidator(_slotService).Validate(request);
-            if(!validate.IsValid)
-            {
-                return BadRequest(new AppResponse<object>
-                {
-                    Message = MessageResponse.BadRequestError
-                });
-            } 
             _slotService.Create(request);
             return Ok(new AppResponse<object>
             {
@@ -40,15 +33,7 @@ namespace BirthdayBlitzAPI.Controllers
         }
         [HttpPut]
         public IActionResult Update([FromBody] UpdateSlotRequest request)
-        {
-            var validate = new UpdateSlotValidator(_slotService).Validate(request);
-            if(!validate.IsValid)
-            {
-                return BadRequest(new AppResponse<object>
-                {
-                    Message = MessageResponse.BadRequestError
-                });
-            }
+        {           
             _slotService.Update(request);
             return Ok(new AppResponse<object>
             {
