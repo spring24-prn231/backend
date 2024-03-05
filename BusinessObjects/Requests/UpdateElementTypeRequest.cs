@@ -7,6 +7,6 @@ namespace BusinessObjects.Requests
 {
     public class UpdateElementTypeRequest : BaseUpdateRequest
     {
-        public string? Name { get; set; }
+        public string Name { get; set; }
     }
 }
