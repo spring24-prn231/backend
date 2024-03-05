@@ -1,17 +1,19 @@
-﻿using BusinessObjects.Models;
-using BusinessObjects.Requests;
+﻿using BusinessObjects.Requests;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 
 namespace BirthdayBlitzAPI.Validators
 {
-    public class CreateRoomValidator : AbstractValidator<CreateRoomRequest>
+    public class UpdateRoomValidator : AbstractValidator<UpdateRoomRequest>
     {
         private readonly IRoomService _roomService;
-        public CreateRoomValidator(IRoomService roomService)
+        public UpdateRoomValidator(IRoomService roomService)
         {
             _roomService = roomService;
+
+            RuleFor(x => x.Id)
+                .Must(x => _roomService.GetByIdNoTracking(x) != null)
+                .WithMessage("Phòng không tồn tại");
 
             RuleForEach(x => x.Slots)
                 .ChildRules(slot =>

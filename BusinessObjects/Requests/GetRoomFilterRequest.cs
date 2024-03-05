@@ -12,6 +12,5 @@ namespace BusinessObjects.Requests
         public Guid? RoomTypeId { get; set; }
         public int? RoomNo { get; set; }
         public int? Capacity { get; set; }
-        public ICollection<Slot>? Slots { get; set; }
     }
 }
