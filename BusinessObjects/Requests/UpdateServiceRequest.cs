@@ -10,5 +10,9 @@ namespace BusinessObjects.Requests
         public string Name { get; set; }
 
         public string? Description { get; set; }
+
+        public List<Guid> ServiceElementIds { get; set; } = new List<Guid>();
+
+        public List<Guid> DishIds { get; set; } = new List<Guid>();
     }
 }
