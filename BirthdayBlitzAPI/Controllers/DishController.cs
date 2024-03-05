@@ -10,9 +10,9 @@ namespace BirthdayBlitzAPI.Controllers
     public class DishController : ApiControllerBase 
     {
         public readonly IDishService _dishService;
-        public DishController(IDishService dishservice)
+        public DishController(IDishService dishService)
         {
-            _dishService = dishservice;
+            _dishService = dishService;
         }
         [HttpGet]
         public IActionResult Get([FromQuery] GetDishFilterRequest filter)
