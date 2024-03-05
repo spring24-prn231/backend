@@ -10,7 +10,7 @@ namespace BusinessObjects.Requests
     public class CreateVoucherRequest
     {
         public Guid OrderId { get; set; }
-        public string? Code { get; set; }
+        public string Code { get; set; }
         public int? Discount { get; set; }
         public decimal? MaximumValue { get; set; }
         public DateTime? ExpirationDate { get; set; }
