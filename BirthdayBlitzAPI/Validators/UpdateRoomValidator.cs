@@ -35,7 +35,6 @@ namespace BirthdayBlitzAPI.Validators
                         .Must(BeValidHour).WithMessage("Thời gian phải trong khoảng từ 0h đến 24h")
                         .GreaterThan(x => x.FromHour).WithMessage("Giờ kết thúc phải lớn hơn giờ bắt đầu");
                 });
-            _roomTypeService = roomTypeService;
         }
 
         private bool BeValidHour(string hour)
