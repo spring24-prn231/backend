@@ -18,7 +18,10 @@ namespace BirthdayBlitzAPI.Validators
         public UpdateServiceElementValidator()
         {
             RuleFor(x => x.Image).Must(isImageUrlValid)
-                .WithMessage("Ảnh không hợp lệ");
+                .WithMessage("Ảnh không hợp lệ")
+                .NotEmpty().WithMessage("Ảnh không được để trống");
+
+            RuleFor(x => x.Description).MaximumLength(500).WithMessage("Mô tả không được quá 500 ký tự.");
         }
     }
 }

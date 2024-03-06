@@ -16,13 +16,17 @@ namespace BirthdayBlitzAPI.Validators
             return Uri.TryCreate(url, UriKind.Absolute, out uriResult)
                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
-        private readonly IServiceElementDetailService _serviceElementDetailService;
-        public CreateServiceElementValidator(IServiceElementDetailService serviceElementDetailService)
+        private readonly IElementTypeService _serviceElementTypeService;
+        public CreateServiceElementValidator(IElementTypeService serviceElementTypeService)
         {
-            _serviceElementDetailService = serviceElementDetailService;
+            _serviceElementTypeService = serviceElementTypeService;
             RuleFor(x => x.Image).Must(isImageUrlValid)
-                .WithMessage("Ảnh không hợp lệ");
-            RuleFor(x => x.ElementTypeId).Must(x => _serviceElementDetailService.GetByIdNoTracking(x) != null)
+                .WithMessage("Ảnh không hợp lệ")
+                .NotEmpty().WithMessage("Ảnh không được để trống");
+
+            RuleFor(x => x.Description).MaximumLength(500).WithMessage("Mô tả không được quá 500 ký tự.");
+
+            RuleFor(x => x.ElementTypeId).Must(x => _serviceElementTypeService.GetByIdNoTracking(x) != null)
                 .WithMessage("ElementType không tồn tại");
         }
     }

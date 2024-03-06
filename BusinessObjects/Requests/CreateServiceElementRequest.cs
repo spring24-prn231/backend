@@ -11,6 +11,6 @@ namespace BusinessObjects.Requests
 
         public string? Description { get; set; }
 
-        public string? Image { get; set; }
+        public string Image { get; set; }
     }
 }
