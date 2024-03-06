@@ -9,7 +9,7 @@ namespace BirthdayBlitzAPI.Controllers
 {
     public class DishTypeController : ApiControllerBase
     {
-        public readonly IDishTypeService _dishTypeService;
+        private readonly IDishTypeService _dishTypeService;
         public DishTypeController(IDishTypeService dishTypeService)
         {
             _dishTypeService = dishTypeService;
