@@ -10,8 +10,8 @@ namespace BusinessObjects.Requests
     {
         public Guid? RoomId { get; set; }
 
-        public string FromHour { get; set; } = null!;
+        public string? FromHour { get; set; } 
 
-        public string ToHour { get; set; } = null!;
+        public string? ToHour { get; set; } 
     }
 }

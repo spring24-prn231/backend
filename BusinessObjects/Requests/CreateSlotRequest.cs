@@ -8,7 +8,7 @@ namespace BusinessObjects.Requests
 {
     public class CreateSlotRequest
     {
-        public Guid? RoomId { get; set; }
+        public Guid RoomId { get; set; }
 
         public string FromHour { get; set; } = null!;
 

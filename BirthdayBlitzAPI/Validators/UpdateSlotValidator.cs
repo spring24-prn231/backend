@@ -1,6 +1,7 @@
 ﻿using BusinessObjects.Requests;
 using FluentValidation;
 using Services.Interfaces;
+using System.Globalization;
 
 namespace BirthdayBlitzAPI.Validators
 {
@@ -10,25 +11,42 @@ namespace BirthdayBlitzAPI.Validators
         public UpdateSlotValidator(ISlotService slotService)
         {
             _slotService = slotService;
+            //Validation rule for To Hour
             RuleFor(x => x.ToHour)
-                .NotEmpty().WithMessage("ToHour is required")
-                .Must(BeValidHour).WithMessage("Hour must be in 0h to 24h")
-                .GreaterThan(x => x.FromHour).WithMessage("ToHour must be greater than FromHour")
-                .NotEqual(x => x.ToHour).WithMessage("This slot is available");
+                .Must((model, toHour) =>
+                {
+                    return TryParseTime(toHour, out int parsedToHour, out int parsedToMinute);
+                })
+                .WithMessage("Giờ kết thúc không hợp lệ");
 
+            //Validation rule for FromHour
             RuleFor(x => x.FromHour)
-                .NotEmpty().WithMessage("FromHour is required")
-                .NotEqual(x => x.FromHour).WithMessage("This slot is available")
-                .Must(BeValidHour).WithMessage("Hour must be in 0h to 24h");
+                .Must((model, fromHour) =>
+                {
+                    return TryParseTime(fromHour, out int parsedFromHour, out int parsedToMinute);
+                }).WithMessage("Giờ bắt đầu không hợp lệ")
+                .Must((model, fromHour) =>
+                {
+                    return DateTime.TryParseExact(fromHour, "H:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedFromHour) &&
+                           DateTime.TryParseExact(model.ToHour, "H:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedToHour) &&
+                           parsedFromHour < parsedToHour;
+                })
+                .WithMessage("Giờ bắt đầu phải nhỏ hơn giờ kết thúc");
         }
 
-        private bool BeValidHour(string hour)
+        private static bool TryParseTime(string input, out int hour, out int minute)
         {
-            if (!int.TryParse(hour, out int hourValue))
+            hour = minute = 0;
+
+            string[] parts = input.Split(':');
+            if (parts.Length == 2 && int.TryParse(parts[0], out hour) && int.TryParse(parts[1], out minute))
             {
-                return false;
+                if (hour >= 0 && hour < 24 && minute >= 0 && minute < 60)
+                {
+                    return true;
+                }
             }
-            return hourValue >= 0 && hourValue <= 24;
+            return false;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace BirthdayBlitzAPI.Controllers
 {
     public class SlotController : ApiControllerBase
     {
-        public ISlotService _slotService;
+        private ISlotService _slotService;
         public SlotController(ISlotService slotService)
         {
             _slotService = slotService;
