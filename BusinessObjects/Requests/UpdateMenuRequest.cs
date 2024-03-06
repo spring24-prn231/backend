@@ -8,8 +8,8 @@ namespace BusinessObjects.Requests
 {
     public class UpdateMenuRequest : BaseUpdateRequest
     {
-        public Guid DishId { get; set; }
+        public Guid? DishId { get; set; } 
 
-        public Guid ServiceId { get; set; }
+        public Guid? ServiceId { get; set; }
     }
 }
