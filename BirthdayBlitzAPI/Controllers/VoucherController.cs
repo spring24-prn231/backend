@@ -10,7 +10,7 @@ namespace BirthdayBlitzAPI.Controllers
 {
     public class VoucherController : ApiControllerBase
     {
-        public readonly IVoucherService _voucherService;
+        private readonly IVoucherService _voucherService;
         public VoucherController(IVoucherService voucherService)
         {
             _voucherService = voucherService;

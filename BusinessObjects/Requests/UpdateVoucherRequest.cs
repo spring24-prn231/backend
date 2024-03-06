@@ -9,7 +9,7 @@ namespace BusinessObjects.Requests
 {
     public class UpdateVoucherRequest : BaseUpdateRequest
     {
-        public string Code { get; set; }
+        public string? Code { get; set; }
         public int? Discount { get; set; }
         public decimal? MaximumValue { get; set; }
         public DateTime? ExpirationDate { get; set; }
