@@ -14,9 +14,9 @@ namespace BusinessObjects.Requests
         [ToLowerContainsComparison]
         [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
         public string? Name { get; set; }
-
         public string? Image { get; set; }
-
+        [ToLowerContainsComparison]
+        [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
         public string? Description { get; set; }
     }
 }
