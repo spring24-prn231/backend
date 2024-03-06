@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Models;
+﻿using AutoFilterer.Types;
+using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,19 @@ namespace BusinessObjects.Requests
 {
     public class UpdateRoomRequest : BaseUpdateRequest
     {
-        public Guid RoomTypeId { get; set; }
+        public Guid RoomTypeId { get; set; } 
 
-        public int RoomNo { get; set; }
+        public Range<int>? RoomNo { get; set; }
 
-        public int Capacity { get; set; }
+        public Range<int>? Capacity { get; set; }
 
-        public virtual ICollection<UpdateSlotDto>? Slots { get; set; }
+        public ICollection<UpdateSlotDto>? Slots { get; set; }
     }
 
     public class UpdateSlotDto
     {
-        public string FromHour { get; set; } = null!;
+        public string? FromHour { get; set; } = null!;
 
-        public string ToHour { get; set; } = null!;
+        public string? ToHour { get; set; } = null!;
     }
 }

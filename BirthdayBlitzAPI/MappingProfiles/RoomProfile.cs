@@ -8,9 +8,8 @@ namespace BirthdayBlitzAPI.MappingProfiles
     {
         public RoomProfile() 
         {
+            CreateMap<CreateRoomRequest, Room>();
             CreateMap<CreateSlotDto, Slot>();
-            CreateMap<CreateRoomRequest, Room>()
-                .ForMember(dest => dest.Slots, opt => opt.MapFrom(src => src.Slots));
             CreateMap<UpdateSlotDto, Slot>();
             CreateMap<UpdateRoomRequest, Room>()
                 .ForMember(x => x.Id, opt => opt.Ignore())

@@ -12,7 +12,7 @@ namespace BusinessObjects.Requests
         public Guid RoomTypeId { get; set; }
         public int RoomNo { get; set; }
         public int Capacity { get; set; }
-        public virtual ICollection<CreateSlotDto> Slots { get; set; } = new List<CreateSlotDto>();
+        public ICollection<CreateSlotDto> Slots { get; set; } = new List<CreateSlotDto>();
     }
 
     public class CreateSlotDto
