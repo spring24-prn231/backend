@@ -12,9 +12,9 @@ namespace BusinessObjects.Requests
     {
         public Guid RoomTypeId { get; set; } 
 
-        public Range<int>? RoomNo { get; set; }
+        public int? RoomNo { get; set; }
 
-        public Range<int>? Capacity { get; set; }
+        public int? Capacity { get; set; }
 
         public ICollection<UpdateSlotDto>? Slots { get; set; }
     }

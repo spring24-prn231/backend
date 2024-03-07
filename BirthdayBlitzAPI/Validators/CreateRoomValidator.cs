@@ -18,6 +18,9 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.RoomTypeId)
                 .Must(x => _roomTypeService.GetByIdNoTracking(x) != null)
                 .WithMessage("Loại phòng không tồn tại");
+            RuleFor(x => x.RoomNo)
+                .Must(roomNo => !_roomService.GetAll().Any(room => room.RoomNo == roomNo))
+                .WithMessage("Số phòng này đã tồn tại");
 
             RuleForEach(x => x.Slots)
                  .ChildRules(slot =>

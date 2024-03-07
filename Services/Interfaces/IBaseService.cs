@@ -11,7 +11,7 @@ namespace Services.Interfaces
 {
     public interface IBaseService<T> where T : BaseModel
     {
-
+        public IQueryable<T> GetAll();
         public IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter;
         T? GetById(Guid id);
         T? GetByIdNoTracking(Guid id);

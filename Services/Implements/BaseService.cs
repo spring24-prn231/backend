@@ -25,12 +25,12 @@ namespace Services.Implements
             _repo = repository;
             _mapper = mapper;
         }
+        
         public virtual void Create<TReq>(TReq entity) where TReq : class
         {
             var newEntity = _mapper.Map<T>(entity);
             _repo.Create(newEntity);
         }
-
         public virtual void Delete(Guid id)
         {
             var entity = _repo.GetById(id);
@@ -47,6 +47,11 @@ namespace Services.Implements
         public virtual IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter
         {
             return _repo.GetAll().GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _repo.GetAll();
         }
 
         public virtual T? GetById(Guid id)
