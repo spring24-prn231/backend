@@ -9,7 +9,7 @@ namespace BirthdayBlitzAPI.Controllers
 {
     public class RoomTypeController : ApiControllerBase
     {
-        public IRoomTypeService _roomTypeService;
+        private readonly IRoomTypeService _roomTypeService;
         public RoomTypeController(IRoomTypeService roomTypeService)
         {
             _roomTypeService = roomTypeService;

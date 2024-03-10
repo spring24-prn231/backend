@@ -13,6 +13,8 @@ namespace BusinessObjects.Requests
         [ToLowerContainsComparison]
         [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
         public string? Name { get; set; }
+        [ToLowerContainsComparison]
+        [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
         public string? Description { get; set; }
     }
 }
