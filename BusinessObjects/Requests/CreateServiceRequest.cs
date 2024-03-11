@@ -13,7 +13,7 @@ namespace BusinessObjects.Requests
 
         public string? Description { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         public List<Guid> ServiceElementIds { get; set; } = new List<Guid>();
 
