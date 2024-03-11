@@ -7,8 +7,10 @@ namespace BusinessObjects.Requests
 {
     public class UpdateServiceElementRequest : BaseUpdateRequest
     {
+        public Guid? ElementTypeId { get; set; }
+
         public string? Description { get; set; }
 
-        public string Image { get; set; }
+        public string? Image { get; set; }
     }
 }
