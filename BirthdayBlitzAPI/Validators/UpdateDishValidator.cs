@@ -15,7 +15,6 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.Description)
                 .MaximumLength(255).WithMessage("Mô tả món ăn không quá 255 kí tự");
             RuleFor(x => x.Image)
-                .Empty()
                 .Must(BeAValidUrl).WithMessage("Không đúng định dạng ảnh");
             RuleFor(x => x.DishTypeId)
                 .Must(x => _dishTypeService.GetByIdNoTracking(x) != null)
