@@ -11,12 +11,8 @@ namespace BusinessObjects.Requests
     public class CreateDishRequest
     {
         public Guid DishTypeId { get; set; }
-        [ToLowerContainsComparison]
-        [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
-        public string? Name { get; set; }
-        public string? Image { get; set; }
-        [ToLowerContainsComparison]
-        [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
-        public string? Description { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+        public string Description { get; set; }
     }
 }
