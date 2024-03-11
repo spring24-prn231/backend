@@ -11,12 +11,12 @@ namespace BirthdayBlitzAPI.Validators
     public class UpdateServiceValidator : AbstractValidator<UpdateServiceRequest>
     {
         private readonly IRoomTypeService _roomTypeService;
-        private readonly IServiceElementDetailService _serviceElementDetailService;
+        private readonly IServiceElementService _serviceElementService;
         private readonly IMenuService _menuService;
-        public UpdateServiceValidator(IRoomTypeService roomTypeService, IServiceElementDetailService serviceElementDetailService, IMenuService menuService)
+        public UpdateServiceValidator(IRoomTypeService roomTypeService, IServiceElementService serviceElementService, IMenuService menuService)
         {
             _roomTypeService = roomTypeService;
-            _serviceElementDetailService = serviceElementDetailService;
+            _serviceElementService = serviceElementService;
             _menuService = menuService;
             RuleFor(x => x.Name)
                 .MaximumLength(100)
@@ -24,16 +24,16 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.Description)
                 .MaximumLength(255)
                 .WithMessage("Mô tả dịch vụ không được quá 255 kýtự");
-            RuleFor(x => x.ServiceElementIds)
+            RuleForEach(x => x.ServiceElementIds)
                 .ChildRules(child => {
                     child.RuleFor(x => x)
-                        .Must(x => x.All(y => _serviceElementDetailService.GetByIdNoTracking(y) != null))
+                        .Must(y => _serviceElementService.GetByIdNoTracking(y) != null)
                         .WithMessage("ServiceElement không tồn tại");
                 });
-            RuleFor(x => x.DishIds)
+            RuleForEach(x => x.DishIds)
                 .ChildRules(child => {
                     child.RuleFor(x => x)
-                        .Must(x => x.All(y => _menuService.GetByIdNoTracking(y) != null))
+                        .Must(y => _menuService.GetByIdNoTracking(y) != null)
                         .WithMessage("Món ăn không tồn tại trong Menu");
                 });
         }

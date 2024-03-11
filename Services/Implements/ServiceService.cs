@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using BusinessObjects.Common.Exceptions;
 using BusinessObjects.Models;
 using BusinessObjects.Requests;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Services.Interfaces;
 
@@ -8,40 +10,43 @@ namespace Services.Implements
 {
     public class ServiceService : BaseService<Service>, IServiceService
     {
-        private readonly BirthdayBlitzContext _context;
-        private readonly IMapper _mapper;
-        public ServiceService(IBaseRepository<Service> repository, IMapper mapper, BirthdayBlitzContext context) : base(repository, mapper)
+        private readonly IMenuService _menuService;
+        private readonly IServiceElementDetailService _serviceElementDetailService;
+        public ServiceService(IBaseRepository<Service> repository, IMapper mapper) : base(repository, mapper)
         {
-            _context = context;
-            _mapper = mapper;
         }
 
         public void Update(UpdateServiceRequest request)
         {
-            var service = _context.Services.Find(request.Id);
-            _mapper.Map(request, service);
-
-            foreach (var elementId in request.ServiceElementIds)
+            var service = _repo.GetAll().Where(x => x.Id == request.Id).Include(x => x.Menus == request.DishIds).FirstOrDefault();
+            if (service != null)
             {
-                var serviceElementDetail = new ServiceElementDetail
+                _mapper.Map(request, service);
+                _repo.Update(service);
+                foreach (var elementId in request.ServiceElementIds)
                 {
-                    ServiceId = service.Id,
-                    ServiceElementId = elementId
-                };
-                _context.ServiceElementDetails.Add(serviceElementDetail);
-            }
+                        var serviceElementDetail = new ServiceElementDetail
+                        {
+                            ServiceId = service.Id,
+                            ServiceElementId = elementId
+                        };
+                        _serviceElementDetailService.Create(serviceElementDetail);
+                }
 
-            foreach (var dishId in request.DishIds)
+                foreach (var dishId in request.DishIds)
+                {
+                        var menu = new Menu
+                        {
+                            ServiceId = service.Id,
+                            DishId = dishId
+                        };
+                        _menuService.Create(menu);
+                }
+            }
+            else
             {
-                var menu = new Menu
-                {
-                    ServiceId = service.Id,
-                    DishId = dishId
-                };
-                _context.Menus.Add(menu);
+                throw new NotFoundException();
             }
-
-            _context.SaveChanges();
         }
     }
 }
