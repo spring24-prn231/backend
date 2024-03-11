@@ -24,10 +24,18 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.Description)
                 .MaximumLength(255)
                 .WithMessage("Mô tả dịch vụ không được quá 255 kýtự");
-            RuleFor(x => x.ServiceElementIds).Must(x => x.All(y => _serviceElementDetailService.GetByIdNoTracking(y) != null))
-                .WithMessage("Dịch vụ không tồn tại");
-            RuleFor(x => x.DishIds).Must(x => x.All(y => _menuService.GetByIdNoTracking(y) != null))
-                .WithMessage("Món ăn không tồn tại trong Menu");
+            RuleFor(x => x.ServiceElementIds)
+                .ChildRules(child => {
+                    child.RuleFor(x => x)
+                        .Must(x => x.All(y => _serviceElementDetailService.GetByIdNoTracking(y) != null))
+                        .WithMessage("ServiceElement không tồn tại");
+                });
+            RuleFor(x => x.DishIds)
+                .ChildRules(child => {
+                    child.RuleFor(x => x)
+                        .Must(x => x.All(y => _menuService.GetByIdNoTracking(y) != null))
+                        .WithMessage("Món ăn không tồn tại trong Menu");
+                });
         }
     }
 }
