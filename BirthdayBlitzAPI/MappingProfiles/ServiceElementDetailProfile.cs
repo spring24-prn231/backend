@@ -13,9 +13,6 @@ namespace BirthdayBlitzAPI.MappingProfiles
         public ServiceElementDetailProfile()
         {
             CreateMap<CreateServiceElementDetailRequest, ServiceElementDetail>();
-            CreateMap<UpdateServiceElementDetailRequest, ServiceElementDetail>()
-                .ForMember(x => x.Id, opt => opt.Ignore())
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }
