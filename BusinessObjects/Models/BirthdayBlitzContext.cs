@@ -52,16 +52,15 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(GetConnectionString());
-    }
-    private string GetConnectionString()
-    {
-        IConfiguration configuration = new ConfigurationBuilder()
+        if (!optionsBuilder.IsConfigured)
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddUserSecrets(Assembly.GetExecutingAssembly())
             .AddJsonFile("appsettings.json", true, true)
             .Build();
-        return configuration.GetConnectionString("BirthdayBlitz");
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("BirthdayBlitz"));
+        }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
