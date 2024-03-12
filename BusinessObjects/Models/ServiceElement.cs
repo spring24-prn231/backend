@@ -11,6 +11,7 @@ public partial class ServiceElement : BaseModel
     public string? Description { get; set; }
 
     public string? Image { get; set; }
+    public decimal? Price { get; set; }
 
     public virtual ElementType ElementType { get; set; } = null!;
 
