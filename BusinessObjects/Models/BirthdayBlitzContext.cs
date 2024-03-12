@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using BusinessObjects.Common.Constants;
 
 namespace BusinessObjects.Models;
 
@@ -65,6 +66,13 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ApplicationUser>(entity =>
+        {
+            entity.Property(e => e.Fullname).HasMaxLength(255);
+        });
+        modelBuilder.Entity<ApplicationUser>().HasIndex(e => e.Email).IsUnique();
+        modelBuilder.Entity<ApplicationUser>().HasIndex(e => e.PhoneNumber).IsUnique();
+        modelBuilder.Entity<ApplicationUser>().HasIndex(e => e.UserName).IsUnique();
         modelBuilder.Entity<Deposit>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Deposit__3214EC07C1384199");
@@ -167,10 +175,10 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.CreateDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            
+
             entity.Property(e => e.EventStart).IsRequired(false)
                 .HasColumnType("datetime");
-            
+
             entity.Property(e => e.EventEnd).IsRequired(false)
                 .HasColumnType("datetime");
 

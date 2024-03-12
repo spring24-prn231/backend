@@ -12,11 +12,11 @@ namespace Services.Interfaces
     public interface IBaseService<T> where T : BaseModel
     {
 
-        public IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter;
+        IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter;
         T? GetById(Guid id);
         T? GetByIdNoTracking(Guid id);
-        public void Create<TReq>(TReq entity) where TReq : class;
-        public void Update<TReq>(TReq entityRequest) where TReq: BaseUpdateRequest;
-        public void Delete(Guid id);
+        void Create<TReq>(TReq entity) where TReq : class;
+        void Update<TReq>(TReq entityRequest) where TReq: BaseUpdateRequest;
+        void Delete(Guid id);
     }
 }

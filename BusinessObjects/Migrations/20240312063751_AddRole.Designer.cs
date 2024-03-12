@@ -4,6 +4,7 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(BirthdayBlitzContext))]
-    partial class BirthdayBlitzContextModelSnapshot : ModelSnapshot
+    [Migration("20240312063751_AddRole")]
+    partial class AddRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -629,27 +632,27 @@ namespace BusinessObjects.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8536d142-d931-4532-8b32-c17db646536c"),
+                            Id = new Guid("d4514b78-ab78-4346-ae54-b3216702399a"),
                             Name = "USER",
-                            NormalizedName = "USER"
+                            NormalizedName = "Khách hàng"
                         },
                         new
                         {
-                            Id = new Guid("2b7d9654-914f-494e-bcad-9cb9aa53c078"),
+                            Id = new Guid("78975a1b-ea7f-4c1d-ab67-c5abebc26615"),
                             Name = "ADMIN",
-                            NormalizedName = "ADMIN"
+                            NormalizedName = "Quản lý"
                         },
                         new
                         {
-                            Id = new Guid("d3a8a043-e475-4f89-9b50-d22585fee0f2"),
+                            Id = new Guid("3116dce2-ab07-4c6f-9b7b-419251d29fc9"),
                             Name = "HOST_STAFF",
-                            NormalizedName = "HOST_STAFF"
+                            NormalizedName = "Nhân viên Quản lý tiệc"
                         },
                         new
                         {
-                            Id = new Guid("6f0a8e56-fdfa-44f2-a507-f563b6c56a7e"),
+                            Id = new Guid("496e92c8-626e-4e49-94b5-59b42e2e61de"),
                             Name = "IMPLEMENT_STAFF",
-                            NormalizedName = "IMPLEMENT_STAFF"
+                            NormalizedName = "Nhân viên Thực hiện"
                         });
                 });
 

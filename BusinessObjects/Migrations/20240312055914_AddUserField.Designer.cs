@@ -4,6 +4,7 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(BirthdayBlitzContext))]
-    partial class BirthdayBlitzContextModelSnapshot : ModelSnapshot
+    [Migration("20240312055914_AddUserField")]
+    partial class AddUserField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -625,32 +628,6 @@ namespace BusinessObjects.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8536d142-d931-4532-8b32-c17db646536c"),
-                            Name = "USER",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = new Guid("2b7d9654-914f-494e-bcad-9cb9aa53c078"),
-                            Name = "ADMIN",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("d3a8a043-e475-4f89-9b50-d22585fee0f2"),
-                            Name = "HOST_STAFF",
-                            NormalizedName = "HOST_STAFF"
-                        },
-                        new
-                        {
-                            Id = new Guid("6f0a8e56-fdfa-44f2-a507-f563b6c56a7e"),
-                            Name = "IMPLEMENT_STAFF",
-                            NormalizedName = "IMPLEMENT_STAFF"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
