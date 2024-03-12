@@ -15,5 +15,7 @@ namespace BusinessObjects.Common.Enums
         public static string ConflictError = "Dữ liệu đã tồn tại";
         public static string BadRequestError = "Yêu cầu không hợp lệ";
         public static string NotFoundError = "Không tìm thấy dữ liệu";
+        public static string Unauthorized = "Xác thực không thành công";
+        public static string Authenticated = "Xác thực thành công";
     }
 }
