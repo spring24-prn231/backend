@@ -50,6 +50,19 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
     public virtual DbSet<Voucher> Vouchers { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(GetConnectionString());
+    }
+    private string GetConnectionString()
+    {
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddUserSecrets(Assembly.GetExecutingAssembly())
+            .AddJsonFile("appsettings.json", true, true)
+            .Build();
+        return configuration.GetConnectionString("BirthdayBlitz");
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
