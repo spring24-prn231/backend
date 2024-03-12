@@ -15,6 +15,7 @@ public partial class OrderDetail : BaseModel
     public string? Type { get; set; }
 
     public decimal? Cost { get; set; }
+    public string? Note { get; set; }
 
     public virtual Order? Order { get; set; }
 }

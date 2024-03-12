@@ -13,6 +13,4 @@ public partial class Room : BaseModel
     public int Capacity { get; set; }
 
     public virtual RoomType RoomType { get; set; } = null!;
-
-    public virtual ICollection<Slot> Slots { get; set; } = new List<Slot>();
 }
