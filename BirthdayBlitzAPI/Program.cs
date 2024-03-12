@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using System.Reflection;
 
@@ -36,8 +37,9 @@ builder.Services.AddSwaggerGen(options =>
     options.DescribeAllParametersInCamelCase();
     options.UseAutoFiltererParameters();
 });
+builder.Configuration.AddUserSecrets<Program>();
 //builder.Services.AddSwaggerGenNewtonsoftSupport();
-builder.Services.AddDbContext<BirthdayBlitzContext>();
+builder.Services.AddDbContext<BirthdayBlitzContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BirthdayBlitz")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>().AddEntityFrameworkStores<BirthdayBlitzContext>()
             .AddDefaultTokenProviders();
 builder.Services.AddAutoMapper(cfg => cfg.Internal().MethodMappingEnabled = false, Assembly.GetExecutingAssembly());

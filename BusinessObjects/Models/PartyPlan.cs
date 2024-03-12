@@ -15,6 +15,7 @@ public partial class PartyPlan : BaseModel
     public string? Description { get; set; }
 
     public string? Note { get; set; }
+    public string? Feedback { get; set; }
 
     public virtual Order? Order { get; set; }
 }

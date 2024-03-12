@@ -48,21 +48,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
     public virtual DbSet<ServiceElementDetail> ServiceElementDetails { get; set; }
 
-    public virtual DbSet<Slot> Slots { get; set; }
-
     public virtual DbSet<Voucher> Vouchers { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(GetConnectionString());
-
-    private string GetConnectionString()
-    {
-        IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddUserSecrets(Assembly.GetExecutingAssembly(),true)
-            .Build();
-        return config["ConnectionString:BirthdayBlitz"];
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -92,6 +78,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.Property(e => e.Price).HasColumnType("decimal(20, 1)");
 
             entity.HasOne(d => d.DishType).WithMany(p => p.Dishes)
                 .HasForeignKey(d => d.DishTypeId)
@@ -164,11 +151,18 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.Property(e => e.Name).IsRequired(false);
             entity.Property(e => e.CreateDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            
+            entity.Property(e => e.EventStart).IsRequired(false)
+                .HasColumnType("datetime");
+            
+            entity.Property(e => e.EventEnd).IsRequired(false)
+                .HasColumnType("datetime");
+
             entity.Property(e => e.Total).HasColumnType("decimal(20, 1)");
-            entity.Property(e => e.SlotId).IsRequired(false);
             entity.Property(e => e.UserId).IsRequired(false);
             entity.Property(e => e.StaffId).IsRequired(false);
             entity.Property(e => e.ServiceId).IsRequired(false);
@@ -177,11 +171,6 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasForeignKey(d => d.ServiceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Order__ServiceId__6FE99F9F");
-
-            entity.HasOne(d => d.Slot).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.SlotId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__SlotId__70DDC3D8");
             entity.HasOne(d => d.User).WithMany(p => p.UserOrders)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
@@ -202,6 +191,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.Price).HasColumnType("decimal(20, 1)");
             entity.Property(e => e.Status).HasDefaultValueSql("1");
             entity.Property(e => e.Type).HasMaxLength(100);
+            entity.Property(e => e.Note).IsRequired(false);
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
@@ -218,6 +208,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.Property(e => e.TimeEnd).HasColumnType("datetime");
             entity.Property(e => e.TimeStart).HasColumnType("datetime");
             entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.Property(e => e.Feedback).IsRequired(false);
 
             entity.HasOne(d => d.Order).WithMany(p => p.PartyPlans)
                 .HasForeignKey(d => d.OrderId)
@@ -277,6 +268,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.Property(e => e.Price).HasColumnType("decimal(20, 1)");
 
             entity.HasOne(d => d.ElementType).WithMany(p => p.ServiceElements)
                 .HasForeignKey(d => d.ElementTypeId)
@@ -302,26 +294,6 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasForeignKey(d => d.ServiceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__ServiceEl__Servi__6383C8BA");
-        });
-
-        modelBuilder.Entity<Slot>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Slot__3214EC0768BFFF5B");
-
-            entity.ToTable("Slot");
-
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Status).HasDefaultValueSql("1");
-            entity.Property(e => e.FromHour)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.ToHour)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.Room).WithMany(p => p.Slots)
-                .HasForeignKey(d => d.RoomId)
-                .HasConstraintName("FK__Slot__RoomId__6C190EBB");
         });
 
         modelBuilder.Entity<Voucher>(entity =>
