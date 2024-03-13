@@ -49,7 +49,12 @@ namespace Services.Implements
             return _repo.GetAll().GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
         }
 
-        public virtual async Task<T?> GetById(Guid id)
+        public IQueryable<T> GetAll()
+        {
+            return _repo.GetAll();
+        }
+
+        public virtual T? GetById(Guid id)
         {
             var result = await _repo.GetById(id);
             return result?.Status == true ? result : null;
