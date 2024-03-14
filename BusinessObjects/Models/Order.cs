@@ -14,6 +14,7 @@ public partial class Order : BaseModel
     public DateTime CreateDate { get; set; }
     public DateTime? EventStart { get; set; }
     public DateTime? EventEnd { get; set; }
+    public decimal? MaxGuest { get; set; }
 
     public decimal? Total { get; set; }
     public string? Name { get; set; }

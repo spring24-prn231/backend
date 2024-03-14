@@ -13,7 +13,7 @@ namespace BirthdayBlitzAPI.Controllers
     [Route("api/v1/[controller]s/")]
     public abstract class ApiControllerBase : ControllerBase
     {
-        protected IActionResult GetResponse<TData>(AppResponse<TData> response) where TData : class
+        protected  IActionResult GetResponse<TData>(AppResponse<TData> response) where TData : class
         {
             switch (response.Status)
             {

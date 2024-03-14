@@ -2,9 +2,7 @@
 using BusinessObjects.Models;
 using BusinessObjects.Requests.Authentication;
 using BusinessObjects.Responses;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces;

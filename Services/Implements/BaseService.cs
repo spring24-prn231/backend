@@ -25,18 +25,18 @@ namespace Services.Implements
             _repo = repository;
             _mapper = mapper;
         }
-        public virtual void Create<TReq>(TReq entity) where TReq : class
+        public virtual async Task Create<TReq>(TReq entity) where TReq : class
         {
             var newEntity = _mapper.Map<T>(entity);
-            _repo.Create(newEntity);
+            await _repo.Create(newEntity);
         }
 
-        public virtual void Delete(Guid id)
+        public virtual async Task Delete(Guid id)
         {
-            var entity = _repo.GetById(id);
+            var entity = await _repo.GetById(id);
             if (entity != null)
             {
-                _repo.Delete(entity);
+                await _repo.Delete(entity);
             }
             else
             {
@@ -49,26 +49,26 @@ namespace Services.Implements
             return _repo.GetAll().GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
         }
 
-        public virtual T? GetById(Guid id)
+        public virtual async Task<T?> GetById(Guid id)
         {
-            var result = _repo.GetById(id);
+            var result = await _repo.GetById(id);
             return result?.Status == true ? result : null;
         }
 
-        public virtual T? GetByIdNoTracking(Guid id)
+        public virtual async Task<T?> GetByIdNoTracking(Guid id)
         {
 
-            var result = _repo.GetByIdNoTracking(id);
+            var result = await _repo.GetByIdNoTracking(id);
             return result?.Status == true ? result : null;
         }
 
-        public virtual void Update<TReq>(TReq entityRequest) where TReq : BaseUpdateRequest
+        public virtual async Task Update<TReq>(TReq entityRequest) where TReq : BaseUpdateRequest
         {
-            var entity = _repo.GetById(entityRequest.Id);
+            var entity = await _repo.GetById(entityRequest.Id);
             if (entity != null)
             {
                 _mapper.Map(entityRequest, entity);
-                _repo.Update(entity);
+                await _repo.Update(entity);
             }
             else
             {

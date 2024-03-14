@@ -1,13 +1,7 @@
 ﻿using DataAccessObjects;
-using Microsoft.Extensions.DependencyInjection;
 using Repositories;
 using Services.Implements;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BirthdayBlitzAPI.Common.Extensions
 {
@@ -15,6 +9,7 @@ namespace BirthdayBlitzAPI.Common.Extensions
     {
         public static void AddDI(this IServiceCollection services)
         {
+            services.AddSingleton<AzureBlobService>();
             services.AddScoped(typeof(IBaseDAO<>), typeof(BaseDAO<>));
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));

@@ -20,16 +20,16 @@ namespace BirthdayBlitzAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] GetServiceFilterRequest filter)
+        public async Task<IActionResult> Get([FromQuery] GetServiceFilterRequest filter)
         {
-            var response = _service.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
+            var response = await _service.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateServiceRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateServiceRequest request)
         {
-            _service.Create(request);
+            await _service.Create(request);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.CreateSuccess
@@ -37,9 +37,9 @@ namespace BirthdayBlitzAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateServiceRequest request)
+        public async Task<IActionResult> Update([FromBody] UpdateServiceRequest request)
         {
-            _service.Update(request);
+            await _service.Update(request);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.UpdateSuccess
@@ -47,9 +47,9 @@ namespace BirthdayBlitzAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            _service.Delete(id);
+            await _service.Delete(id);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.DeleteSuccess

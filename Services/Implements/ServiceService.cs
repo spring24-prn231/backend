@@ -16,13 +16,14 @@ namespace Services.Implements
         {
         }
 
-        public void Update(UpdateServiceRequest request)
+        public override async Task Update<TReq>(TReq entityRequest)
         {
-            var service = _repo.GetAll().Where(x => x.Id == request.Id).Include(x => x.Menus == request.DishIds).FirstOrDefault();
+            var request = entityRequest as UpdateServiceRequest;
+            var service = await _repo.GetAll().Where(x => x.Id == request.Id).Include(x => x.Menus == request.DishIds).FirstOrDefaultAsync();
             if (service != null)
             {
                 _mapper.Map(request, service);
-                _repo.Update(service);
+                await _repo.Update(service);
                 foreach (var elementId in request.ServiceElementIds)
                 {
                         var serviceElementDetail = new ServiceElementDetail
@@ -30,7 +31,7 @@ namespace Services.Implements
                             ServiceId = service.Id,
                             ServiceElementId = elementId
                         };
-                        _serviceElementDetailService.Create(serviceElementDetail);
+                        await _serviceElementDetailService.Create(serviceElementDetail);
                 }
 
                 foreach (var dishId in request.DishIds)
@@ -40,7 +41,7 @@ namespace Services.Implements
                             ServiceId = service.Id,
                             DishId = dishId
                         };
-                        _menuService.Create(menu);
+                        await _menuService.Create(menu);
                 }
             }
             else

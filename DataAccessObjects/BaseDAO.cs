@@ -17,14 +17,14 @@ namespace DataAccessObjects
         {
             return _dbSet.AsQueryable();
         }
-        public virtual void Create(T entity)
+        public virtual async Task Create(T entity)
         {
             for (int i=0;i<=2;i++)
             {
                 try
                 {
                     _dbSet.Add(entity);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     break;
                 }
                 catch (Exception e)
@@ -38,7 +38,7 @@ namespace DataAccessObjects
                 }
             }
         }
-        public virtual void Update(T entity)
+        public virtual async Task Update(T entity)
         {
             for (int i = 0; i <= 2; i++)
             {
@@ -46,7 +46,7 @@ namespace DataAccessObjects
                 {
                     var tracker = _context.Attach(entity);
                     tracker.State = EntityState.Modified;
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     break;
                 }
                 catch (Exception e)
@@ -60,14 +60,14 @@ namespace DataAccessObjects
                 }
             }
         }
-        public virtual void Delete(T entity)
+        public virtual async Task Delete(T entity)
         {
             for (int i = 0; i <= 2; i++)
             {
                 try
                 {
                     _dbSet.Remove(entity);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     break;
                 }
                 catch (Exception e)
@@ -82,14 +82,14 @@ namespace DataAccessObjects
             }
         }
 
-        public T? GetById(Guid id)
+        public async Task<T?> GetById(Guid id)
         {
-            return _dbSet.FirstOrDefault(x => x.Id == id);
+            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public T? GetByIdNoTracking(Guid id)
+        public async Task<T?> GetByIdNoTracking(Guid id)
         {
-            return _dbSet.AsNoTracking().FirstOrDefault(x=>x.Id == id);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
         }
     }
 }

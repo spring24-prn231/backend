@@ -3,15 +3,15 @@ using BusinessObjects.Common.Exceptions;
 using BusinessObjects.Models;
 using BusinessObjects.Responses;
 using X.PagedList;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessObjects.Common.Extensions
 {
     public static class QueryExtensions
     {
-        public static AppResponse<IEnumerable<T>>? GetPaginatedResponse<T>(this IQueryable<T> source, int page = 1, int pageSize = 10)
+        public static async Task<AppResponse<IEnumerable<T>>?> GetPaginatedResponse<T>(this IQueryable<T> source, int page = 1, int pageSize = 10)
         {
-            var paginatedResult = source.ToPagedList(page, pageSize);
-            if (paginatedResult.TotalItemCount == 0) throw new NotFoundException();
+            var paginatedResult = await source.ToPagedListAsync(page, pageSize);
             return new PaginationResponse<IEnumerable<T>>
             {
                 PageSize = pageSize,

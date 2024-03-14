@@ -9,11 +9,11 @@ namespace Repositories
 {
     public interface IBaseRepository<T> where T : BaseModel
     {
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task Create(T entity);
+        Task Update(T entity);
+        Task Delete(T entity);
         IQueryable<T> GetAll();
-        T? GetById(Guid id);
-        T? GetByIdNoTracking(Guid id);
+        Task<T?> GetById(Guid id);
+        Task<T?> GetByIdNoTracking(Guid id);
     }
 }
