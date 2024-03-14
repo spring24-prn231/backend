@@ -16,15 +16,15 @@ namespace Repositories
         {
             _dao = dao;
         }
-        public virtual void Create(T entity)
+        public virtual async Task Create(T entity)
         {
-            _dao.Create(entity);
+            await _dao.Create(entity);
         }
 
-        public virtual void Delete(T entity)
+        public virtual async Task Delete(T entity)
         {
             entity.Status = false;
-            _dao.Update(entity);
+            await _dao.Update(entity);
         }
 
         public virtual IQueryable<T> GetAll()
@@ -32,19 +32,19 @@ namespace Repositories
             return _dao.GetAll();
         }
 
-        public virtual T? GetById(Guid id)
+        public virtual async Task<T?> GetById(Guid id)
         {
-            return _dao.GetById(id);
+            return await _dao.GetById(id);
         }
 
-        public virtual T? GetByIdNoTracking(Guid id)
+        public virtual async Task<T?> GetByIdNoTracking(Guid id)
         {
-            return _dao.GetByIdNoTracking(id);
+            return await _dao.GetByIdNoTracking(id);
         }
 
-        public virtual void Update(T entity)
+        public virtual async Task Update(T entity)
         {
-            _dao.Update(entity);
+            await _dao.Update(entity);
         }
     }
 }

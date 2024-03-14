@@ -5,6 +5,5 @@ namespace Services.Interfaces
 {
     public interface IServiceService : IBaseService<Service>
     {
-        public void Update(UpdateServiceRequest request);
     }
 }

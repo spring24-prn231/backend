@@ -13,10 +13,10 @@ namespace Services.Interfaces
     {
 
         IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter;
-        T? GetById(Guid id);
-        T? GetByIdNoTracking(Guid id);
-        void Create<TReq>(TReq entity) where TReq : class;
-        void Update<TReq>(TReq entityRequest) where TReq: BaseUpdateRequest;
-        void Delete(Guid id);
+        Task<T?> GetById(Guid id);
+        Task<T?> GetByIdNoTracking(Guid id);
+        Task Create<TReq>(TReq entity) where TReq : class;
+        Task Update<TReq>(TReq entityRequest) where TReq: BaseUpdateRequest;
+        Task Delete(Guid id);
     }
 }

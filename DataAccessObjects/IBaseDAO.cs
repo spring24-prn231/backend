@@ -11,10 +11,10 @@ namespace DataAccessObjects
     public interface IBaseDAO<T> where T : BaseModel
     {
         IQueryable<T> GetAll();
-        T? GetById(Guid id);
-        T? GetByIdNoTracking(Guid id);
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task<T?> GetById(Guid id);
+        Task<T?> GetByIdNoTracking(Guid id);
+        Task Create(T entity);
+        Task Update(T entity);
+        Task Delete(T entity);
     }   
 }

@@ -15,33 +15,33 @@ namespace BirthdayBlitzAPI.Controllers
             _dishService = dishService;
         }
         [HttpGet]
-        public IActionResult Get([FromQuery] GetDishFilterRequest filter)
+        public async Task<IActionResult> Get([FromQuery] GetDishFilterRequest filter)
         {
-            var response = _dishService.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
+            var response = await _dishService.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
         [HttpPost]
-        public IActionResult Create([FromBody] CreateDishRequest request)
+        public async Task<IActionResult> Create([FromForm] CreateDishRequest request)
         {
-            _dishService.Create(request);
+            await _dishService.Create(request);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.CreateSuccess
             });
         }
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateDishRequest request)
+        public async Task<IActionResult> Update([FromBody] UpdateDishRequest request)
         {
-            _dishService.Update(request);
+            await _dishService.Update(request);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.UpdateSuccess
             });
         }
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            _dishService.Delete(id);
+            await _dishService.Delete(id);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.DeleteSuccess
