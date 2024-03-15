@@ -183,7 +183,6 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasColumnType("datetime");
 
             entity.Property(e => e.Total).HasColumnType("decimal(20, 1)");
-            entity.Property(e => e.MaxGuest).HasColumnType("decimal(20, 1)");
             entity.Property(e => e.UserId).IsRequired(false);
             entity.Property(e => e.StaffId).IsRequired(false);
             entity.Property(e => e.ServiceId).IsRequired(false);
