@@ -11,7 +11,7 @@ namespace BirthdayBlitzAPI.Validators
         {
             _orderService = orderService;
             RuleFor(x => x.RatingStar).LessThanOrEqualTo((byte) 5);
-            RuleFor(x => x.OrderId).Must(x => _orderService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
                 .WithMessage("Order không tồn tại");
         }
     }

@@ -28,13 +28,12 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.MaximumValue)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("MaximumValue phải lớn hơn 0đ")
-                .ScalePrecision(1, 20)
+                .PrecisionScale(1, 20, false)
                 .WithMessage("MaximumValue không hợp lệ, chỉ được chứa tối đa 1 chữ số sau dấu thập phân");
             RuleFor(x => x.ExpirationDate)
                 .GreaterThan(DateTime.Now)
                 .WithMessage("ExpirationDate phải lớn hơn ngày hiện tại");
-            RuleFor(x => x.OrderId)
-                .Must(x => _orderService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
                 .WithMessage("Order không tồn tại");
         }
     }

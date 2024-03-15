@@ -17,7 +17,7 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.Image)
                 .Must(BeAValidUrl).WithMessage("Không đúng định dạng ảnh");
             RuleFor(x => x.DishTypeId)
-                .Must(x => _dishTypeService.GetByIdNoTracking(x) != null)
+                .MustAsync(async (x, cancellationToken) => await _dishTypeService.GetByIdNoTracking(x) != null)
                 .WithMessage("Loại món ăn không tồn tại");
         }
         private bool BeAValidUrl(string url)

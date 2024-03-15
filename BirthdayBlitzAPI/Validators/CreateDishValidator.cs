@@ -7,7 +7,7 @@ namespace BirthdayBlitzAPI.Validators
     public class CreateDishValidator : AbstractValidator<CreateDishRequest>
     {
         private readonly IDishTypeService _dishTypeService;
-        public CreateDishValidator(IDishService dishService, IDishTypeService dishTypeService)
+        public CreateDishValidator(IDishTypeService dishTypeService)
         {
             _dishTypeService = dishTypeService;
             RuleFor(x => x.Name)
@@ -19,7 +19,7 @@ namespace BirthdayBlitzAPI.Validators
             //RuleFor(x => x.Image)
             //    .Must(BeAValidUrl).WithMessage("Không đúng định dạng ảnh");
             RuleFor(x => x.DishTypeId)
-                .Must(x => _dishTypeService.GetByIdNoTracking(x) != null)
+                .MustAsync(async (x, cancellationToken) => await _dishTypeService.GetByIdNoTracking(x) != null)
                 .WithMessage("Loại món ăn không tồn tại");
         }
         //private bool BeAValidUrl(string url)
