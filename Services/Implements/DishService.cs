@@ -20,8 +20,8 @@ namespace Services.Implements
             var newEntityReq = entity as CreateDishRequest;
             var newEntity = _mapper.Map<Dish>(newEntityReq);
             var imageName = $"Dish_{newEntity.Id}.{Path.GetExtension(newEntityReq.ImageFile.FileName)}";
-            var reponse = await _azureBlobService.UploadFiles(new List<IFormFile> { newEntityReq.ImageFile }, imageName);
-            newEntity.Image = $"https://birthdayblitzfilestorage.blob.core.windows.net/images/{imageName}";
+            var response = await _azureBlobService.UploadFiles(new List<IFormFile> { newEntityReq.ImageFile }, imageName);
+            newEntity.Image = response.FirstOrDefault();
             await _repo.Create(newEntity);
         }
     }

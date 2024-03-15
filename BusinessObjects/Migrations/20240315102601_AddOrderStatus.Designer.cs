@@ -4,6 +4,7 @@ using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(BirthdayBlitzContext))]
-    partial class BirthdayBlitzContextModelSnapshot : ModelSnapshot
+    [Migration("20240315102601_AddOrderStatus")]
+    partial class AddOrderStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,11 +329,6 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("EventStart")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("ExecutionStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
                     b.Property<decimal?>("MaxGuest")
                         .HasColumnType("decimal(20, 1)");
 
@@ -343,10 +341,10 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid?>("StaffId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool?>("Status")
+                    b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("1");
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(20, 1)");

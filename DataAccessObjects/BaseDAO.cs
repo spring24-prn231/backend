@@ -44,8 +44,8 @@ namespace DataAccessObjects
             {
                 try
                 {
-                    var tracker = _context.Attach(entity);
-                    tracker.State = EntityState.Modified;
+                    //var tracker = _context.Attach(entity);
+                    //tracker.State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     break;
                 }

@@ -1,13 +1,12 @@
 ﻿using BusinessObjects.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessObjects.Requests;
 
 namespace Services.Interfaces
 {
     public interface IOrderService : IBaseService<Order>
     {
+        Task Create<TReq>(TReq entity, Guid userId);
+        Task AssignStaff(AssignStaffRequest request);
+        Task<bool> DoneOrder(DoneOrderRequest request, Guid staffId);
     }
 }
