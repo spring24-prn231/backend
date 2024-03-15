@@ -16,11 +16,11 @@ namespace BirthdayBlitzAPI.Validators
             _dishService = dishService;
 
             RuleFor(x => x.DishId)
-                .Must(x => !x.HasValue || _dishService.GetById(x.Value) != null)
+                .MustAsync(async (x, cancellationToken) => !x.HasValue || await _dishService.GetById(x.Value) != null)
                 .WithMessage("Món ăn này không có");
 
             RuleFor(x => x.ServiceId)
-                .Must(x => !x.HasValue || _serviceService.GetById(x.Value) != null)
+                .MustAsync(async (x, cancellationToken) => !x.HasValue || await _serviceService.GetById(x.Value) != null)
                 .WithMessage("Dịch vụ này không tồn tại");
         }
     }

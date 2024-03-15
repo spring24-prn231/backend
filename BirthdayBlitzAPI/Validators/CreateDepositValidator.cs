@@ -18,7 +18,7 @@ namespace BirthdayBlitzAPI.Validators
                 .WithMessage("Tiền đặt cọc phải lớn hơn 0đ")
                 .PrecisionScale(1, 20, false)
                 .WithMessage("Tiền đặt cọc không hợp lệ");
-            RuleFor(x => x.OrderId).Must(x => _orderService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
                 .WithMessage("Order không tồn tại");
         }
     }

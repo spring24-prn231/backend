@@ -16,33 +16,33 @@ namespace BirthdayBlitzAPI.Controllers
             _roomService = roomService;
         }
         [HttpGet]
-        public IActionResult Get([FromQuery] GetRoomFilterRequest filter)
+        public async Task<IActionResult> Get([FromQuery] GetRoomFilterRequest filter)
         {
-            var response = _roomService.Get(filter).GetPaginatedResponse(page: filter.Page, filter.PageSize);
+            var response = await _roomService.Get(filter).GetPaginatedResponse(page: filter.Page, filter.PageSize);
             return Ok(response);
         }
         [HttpPost]
-        public IActionResult Create([FromBody] CreateRoomRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateRoomRequest request)
         {
-            _roomService.Create(request);
+            await _roomService.Create(request);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.CreateSuccess
             });
         }
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateRoomRequest request)
+        public async Task<IActionResult> Update([FromBody] UpdateRoomRequest request)
         {
-            _roomService.Update(request);
+            await _roomService.Update(request);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.UpdateSuccess
             });
         }
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            _roomService.Delete(id);
+            await _roomService.Delete(id);
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.DeleteSuccess

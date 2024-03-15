@@ -16,9 +16,9 @@ namespace BirthdayBlitzAPI.Validators
         {
             _serviceService = serviceService;
             _serviceElementService = serviceElementService;
-            RuleFor(x => x.ServiceId).Must(x => _serviceService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.ServiceId).MustAsync(async (x, cancellationToken) => await _serviceService.GetByIdNoTracking(x) != null)
                 .WithMessage("Service không tồn tại");
-            RuleFor(x => x.ServiceElementId).Must(x => _serviceElementService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.ServiceElementId).MustAsync(async (x, cancellationToken) => await _serviceElementService.GetByIdNoTracking(x) != null)
                 .WithMessage("ServiceElement không tồn tại");
         }
     }

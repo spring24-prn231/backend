@@ -15,12 +15,10 @@ namespace BirthdayBlitzAPI.Validators
             _serviceService = serviceService;
             _dishService = dishService;
 
-            RuleFor(x => x.DishId)
-                .Must(x => _dishService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.DishId).MustAsync(async (x, cancellationToken) => await _dishService.GetByIdNoTracking(x) != null)
                 .WithMessage("Món ăn này không có");
 
-            RuleFor(x => x.ServiceId)
-                .Must(x => _serviceService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.ServiceId).MustAsync(async (x, cancellationToken) => await _serviceService.GetByIdNoTracking(x) != null)
                 .WithMessage("Dịch vụ này không tồn tại");
         }
     }

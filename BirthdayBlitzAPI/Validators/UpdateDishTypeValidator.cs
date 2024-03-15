@@ -6,10 +6,8 @@ namespace BirthdayBlitzAPI.Validators
 {
     public class UpdateDishTypeValidator : AbstractValidator<UpdateDishTypeRequest>
     {
-        private readonly IDishTypeService _dishTypeService;
-        public UpdateDishTypeValidator(IDishTypeService dishTypeService)
+        public UpdateDishTypeValidator()
         {
-            _dishTypeService = dishTypeService;
             RuleFor(x => x.Name)
                 .MaximumLength(100).WithMessage("Loại món ăn không quá 100 kí tự");
         }

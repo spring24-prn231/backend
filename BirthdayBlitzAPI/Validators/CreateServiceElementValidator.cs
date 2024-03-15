@@ -26,7 +26,7 @@ namespace BirthdayBlitzAPI.Validators
 
             RuleFor(x => x.Description).MaximumLength(500).WithMessage("Mô tả không được quá 500 ký tự.");
 
-            RuleFor(x => x.ElementTypeId).Must(x => _serviceElementTypeService.GetByIdNoTracking(x) != null)
+            RuleFor(x => x.ElementTypeId).MustAsync(async (x, cancellationToken) => await _serviceElementTypeService.GetByIdNoTracking(x) != null)
                 .WithMessage("ElementType không tồn tại");
         }
     }
