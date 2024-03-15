@@ -4,10 +4,9 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class Order
+public partial class Order : BaseModel
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public int? Status { get; set; } = (int)OrderStatus.NEW;
+    public int? ExecutionStatus { get; set; } = (int)OrderStatus.NEW;
     public Guid? ServiceId { get; set; }
 
     public Guid? UserId { get; set; }
