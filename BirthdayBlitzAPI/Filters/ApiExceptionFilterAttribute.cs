@@ -6,13 +6,13 @@ using System;
 using BusinessObjects.Common.Constants;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Exceptions;
+using System.Diagnostics;
 
 namespace BirthdayBlitzAPI.Filters
 {
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-
         public ApiExceptionFilterAttribute()
         {
             // Register known exception types and handlers.
@@ -40,6 +40,9 @@ namespace BirthdayBlitzAPI.Filters
         }
         private void HandleUnknownException(ExceptionContext context)
         {
+#if DEBUG
+            Debug.WriteLine(context.Exception.Message);
+#endif
             var details = new AppResponse<object>()
             {
                 Status = StatusResponse.Fail,

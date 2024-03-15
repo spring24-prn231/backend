@@ -1,11 +1,8 @@
 using AutoFilterer.Swagger;
 using AutoMapper.Internal;
 using BirthdayBlitzAPI.Common.Extensions;
-using BusinessObjects.Common.Constants;
-using BusinessObjects.Common.Enums;
 using BusinessObjects.Models;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
 using System.Text;
 
@@ -24,7 +22,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
 });
-builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
