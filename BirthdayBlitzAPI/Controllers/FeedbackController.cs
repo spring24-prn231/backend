@@ -4,6 +4,7 @@ using BusinessObjects.Common.Extensions;
 using BusinessObjects.Models;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -24,6 +25,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
+        [Authorize(Roles = "USER")]
         public async Task<IActionResult> Create([FromBody] CreateFeedbackRequest request)
         {
             await _service.Create(request);
@@ -33,6 +35,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromBody] UpdateFeedbackRequest request)
         {
             await _service.Update(request);
@@ -42,6 +45,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _service.Delete(id);

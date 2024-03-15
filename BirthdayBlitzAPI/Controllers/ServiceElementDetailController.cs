@@ -6,6 +6,7 @@ using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -27,6 +28,7 @@ namespace BirthdayBlitzAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Create([FromBody] CreateServiceElementDetailRequest request)
         {
             await _service.Create(request);
@@ -37,6 +39,7 @@ namespace BirthdayBlitzAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _service.Delete(id);
