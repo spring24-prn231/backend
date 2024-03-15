@@ -169,7 +169,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
             entity.ToTable("Order");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.Property(e => e.Status).HasDefaultValue((int)OrderStatus.NEW);
             entity.Property(e => e.Name).IsRequired(false);
             entity.Property(e => e.CreateDate)
                 .HasDefaultValueSql("(getdate())")

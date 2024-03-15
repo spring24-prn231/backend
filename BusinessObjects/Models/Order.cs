@@ -1,11 +1,13 @@
-﻿using System;
+﻿using BusinessObjects.Common.Constants;
+using System;
 using System.Collections.Generic;
 
 namespace BusinessObjects.Models;
 
-public partial class Order : BaseModel
+public partial class Order
 {
-
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public int? Status { get; set; } = (int)OrderStatus.NEW;
     public Guid? ServiceId { get; set; }
 
     public Guid? UserId { get; set; }
