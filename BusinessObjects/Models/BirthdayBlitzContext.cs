@@ -87,7 +87,6 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK__Deposit__OrderId__7D439ABD");
         });
-
         modelBuilder.Entity<Dish>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Dish__3214EC0718721564");
@@ -183,6 +182,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasColumnType("datetime");
 
             entity.Property(e => e.Total).HasColumnType("decimal(20, 1)");
+            entity.Property(e => e.MaxGuest).HasColumnType("decimal(20, 1)");
             entity.Property(e => e.UserId).IsRequired(false);
             entity.Property(e => e.StaffId).IsRequired(false);
             entity.Property(e => e.ServiceId).IsRequired(false);
@@ -334,7 +334,13 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK__Voucher__OrderId__05D8E0BE");
         });
-
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.ToTable("Notification");
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
+        });
         OnModelCreatingPartial(modelBuilder);
     }
 
