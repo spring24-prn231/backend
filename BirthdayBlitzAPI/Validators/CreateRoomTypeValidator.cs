@@ -6,10 +6,8 @@ namespace BirthdayBlitzAPI.Validators
 {
     public class CreateRoomTypeValidator : AbstractValidator<CreateRoomTypeRequest>
     {
-        private readonly IRoomTypeService _roomTypeService;
-        public CreateRoomTypeValidator(IRoomTypeService roomTypeService)
+        public CreateRoomTypeValidator()
         {
-            _roomTypeService = roomTypeService;
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Không được để trống loại phòng")

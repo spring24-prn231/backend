@@ -30,13 +30,13 @@ namespace BirthdayBlitzAPI.Validators
             RuleForEach(x => x.ServiceElementIds)
                 .ChildRules(child => {
                     child.RuleFor(x => x)
-                        .MustAsync(async (x, cancellationToken) => await _serviceElementService.GetByIdNoTracking(y) != null)
+                        .MustAsync(async (y, cancellationToken) => await _serviceElementService.GetByIdNoTracking(y) != null)
                         .WithMessage("ServiceElement không tồn tại");
                 });
             RuleForEach(x => x.DishIds)
                 .ChildRules(child => {
                     child.RuleFor(x => x)
-                        .MustAsync(async (x, cancellationToken) => await _menuService.GetByIdNoTracking(y) != null)
+                        .MustAsync(async (y, cancellationToken) => await _menuService.GetByIdNoTracking(y) != null)
                         .WithMessage("Món ăn không tồn tại trong Menu");
                 });
         }

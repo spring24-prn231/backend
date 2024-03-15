@@ -54,7 +54,7 @@ namespace Services.Implements
             return _repo.GetAll();
         }
 
-        public virtual T? GetById(Guid id)
+        public virtual async Task<T?> GetById(Guid id)
         {
             var result = await _repo.GetById(id);
             return result?.Status == true ? result : null;
