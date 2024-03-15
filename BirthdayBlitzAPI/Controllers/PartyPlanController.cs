@@ -29,10 +29,36 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [HttpPost("list")]
+        public async Task<IActionResult> CreatePartyPlanByList([FromBody] List<CreatePartyPlanRequest> requests)
+        {
+            foreach (var request in requests)
+            {
+                await _partyPlanService.Create(request);
+            }
+
+            return Ok(new AppResponse<object>
+            {
+                Message = MessageResponse.CreateSuccess
+            });
+        }
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdatePartyPlanRequest request)
         {
             await _partyPlanService.Update(request);
+            return Ok(new AppResponse<object>
+            {
+                Message = MessageResponse.UpdateSuccess
+            });
+        }
+        [HttpPut("list")]
+        public async Task<IActionResult> UpdatePartyPlan([FromBody] List<UpdatePartyPlanRequest> requests)
+        {
+            foreach (var request in requests)
+            {
+                await _partyPlanService.Update(request);
+            }
+
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.UpdateSuccess

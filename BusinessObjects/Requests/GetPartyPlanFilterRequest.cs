@@ -1,5 +1,6 @@
 ﻿using AutoFilterer.Attributes;
 using AutoFilterer.Enums;
+using AutoFilterer.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace BusinessObjects.Requests
     {
         public Guid? OrderId { get; set; }
 
-        public DateTime? TimeStart { get; set; }
+        public Range<DateTime>? TimeStart { get; set; }
 
-        public DateTime? TimeEnd { get; set; }
+        public Range<DateTime>? TimeEnd { get; set; }
         [ToLowerContainsComparison]
         [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
         public string? Description { get; set; }
