@@ -99,12 +99,12 @@ namespace DataAccessObjects
 
         public async Task<T?> GetById(Guid id)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbSet.GetQueryStatusTrue().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<T?> GetByIdNoTracking(Guid id)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
+            return await _dbSet.GetQueryStatusTrue().AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
         }
     }
 }
