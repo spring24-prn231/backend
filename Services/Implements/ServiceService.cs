@@ -13,8 +13,10 @@ namespace Services.Implements
         private readonly IMenuService _menuService;
         private readonly IServiceElementDetailService _serviceElementDetailService;
 
-        public ServiceService(IBaseRepository<Service> repository, IMapper mapper) : base(repository, mapper)
+        public ServiceService(IBaseRepository<Service> repository, IMapper mapper, IMenuService menuService, IServiceElementDetailService serviceElementDetailService) : base(repository, mapper)
         {
+            _menuService = menuService;
+            _serviceElementDetailService = serviceElementDetailService;
         }
 
         public override async Task Update<TReq>(TReq entityRequest)
@@ -24,7 +26,6 @@ namespace Services.Implements
             if (service != null)
             {
                 _mapper.Map(request, service);
-
                 if (request.ServiceElementIds != null && request.DishIds != null)
                 {
                     //delete all serviceelementdetails and menus
@@ -34,7 +35,7 @@ namespace Services.Implements
                         var deleteTasks = serviceElementDetails.Select(serviceElementDetail => _serviceElementDetailService.Delete(serviceElementDetail.Id));
                         await Task.WhenAll(deleteTasks);
                     }
-                    
+
                     var menus = await _menuService.GetAll().Where(x => x.ServiceId == service.Id).ToListAsync();
                     if (menus != null)
                     {
@@ -50,7 +51,7 @@ namespace Services.Implements
                             ServiceId = service.Id,
                             ServiceElementId = elementId
                         };
-                        await _serviceElementDetailService.Create(serviceElementDetail);
+                        _serviceElementDetailService.Create(serviceElementDetail);
                     }
                     foreach (var dishId in request.DishIds)
                     {
@@ -59,8 +60,9 @@ namespace Services.Implements
                             ServiceId = service.Id,
                             DishId = dishId
                         };
-                        await _menuService.Create(menu);
+                        _menuService.Create(menu);
                     }
+                    await _repo.Update(service);
                 }
                 else
                 {
@@ -71,6 +73,31 @@ namespace Services.Implements
             {
                 throw new NotFoundException();
             }
+        }
+
+        public override async Task Create<TReq>(TReq entityRequest)
+        {
+            var request = entityRequest as CreateServiceRequest;
+            var service = _mapper.Map<Service>(request);
+            foreach (var elementId in request.ServiceElementIds)
+            {
+                var serviceElementDetail = new ServiceElementDetail
+                {
+                    ServiceId = service.Id,
+                    ServiceElementId = elementId
+                };
+                _serviceElementDetailService.Create(serviceElementDetail);
+            }
+            foreach (var dishId in request.DishIds)
+            {
+                var menu = new Menu
+                {
+                    ServiceId = service.Id,
+                    DishId = dishId
+                };
+                _menuService.Create(menu);
+            }
+            await _repo.Create(service);
         }
     }
 }
