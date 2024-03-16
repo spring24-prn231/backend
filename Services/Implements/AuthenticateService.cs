@@ -102,6 +102,10 @@ namespace Services.Implements
                     RefreshToken = refreshToken,
                 };
             }
+            else if(user != null)
+            {
+                await _userManager.AccessFailedAsync(user);
+            }
             return null;
         }
 
