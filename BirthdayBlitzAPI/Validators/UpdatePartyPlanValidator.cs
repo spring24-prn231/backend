@@ -8,21 +8,20 @@ namespace BirthdayBlitzAPI.Validators
     public class UpdatePartyPlanValidator : AbstractValidator<UpdatePartyPlanRequest>
     {
         private readonly IPartyPlanService _partyPlanService;
-        private readonly IOrderService _orderService;
-        public UpdatePartyPlanValidator(IPartyPlanService partyPlanService, IOrderService orderService)
+        public UpdatePartyPlanValidator(IPartyPlanService partyPlanService)
         {
             _partyPlanService = partyPlanService;
-            _orderService = orderService;
 
-            RuleFor(x => x.TimeStart)
-                .MustAsync(async (timeStart, cancellationToken) => !await _partyPlanService.GetAll().AnyAsync(r => r.TimeStart == timeStart, cancellationToken))
-                .WithMessage("Thời gian bắt đầu đã tồn tại");
-            RuleFor(x => x.TimeEnd)
-                .MustAsync(async (timeEnd, cancellationToken) => !await _partyPlanService.GetAll().AnyAsync(r => r.TimeEnd == timeEnd, cancellationToken))
-                .WithMessage("Thời gian kết thúc đã tồn tại");
-            RuleFor(x => x.TimeStart)
-                .LessThan(x => x.TimeEnd)
-                .WithMessage("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc");
+            RuleFor(x => new { x.TimeStart, x.TimeEnd, x.Id})
+                .MustAsync(async (x, cancellationToken) => await ValidateTimeRange(x.TimeStart, x.TimeEnd, x.Id))
+                .WithMessage("Khoảng thời gian không hợp lệ");
+        }
+        private async Task<bool> ValidateTimeRange(DateTime? timeStart, DateTime? timeEnd, Guid id)
+        {
+            var orderId = await _partyPlanService.GetAll().Where(x => x.Id == id).Select(x => x.OrderId).FirstOrDefaultAsync();
+            if (orderId == null) return true;
+            if (timeStart == null && timeEnd == null) return true;
+            return (!await _partyPlanService.GetAll().AnyAsync(x => x.OrderId == orderId && timeStart < x.TimeEnd && x.TimeStart < timeEnd)) && timeStart < timeEnd;
         }
     }
 }

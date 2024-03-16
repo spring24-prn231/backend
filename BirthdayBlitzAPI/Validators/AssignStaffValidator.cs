@@ -29,7 +29,7 @@ namespace BirthdayBlitzAPI.Validators
                 {
                     var order = await _orderService.GetByIdNoTracking(x);
                     if (order == null) return false;
-                    return order.ExecutionStatus == (int)OrderStatus.NEW || order.ExecutionStatus == (int)OrderStatus.EXECUTING;
+                    return order.ExecutionStatus == (int)OrderStatus.NEW || order.ExecutionStatus == (int)OrderStatus.ASSIGNED;
                 })
                 .WithMessage("Order không tồn tại hoặc trạng thái order không phù hợp!");
         }
