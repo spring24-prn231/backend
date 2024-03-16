@@ -57,8 +57,8 @@ namespace BirthdayBlitzAPI.Controllers
         [HttpPost("staff-assignment")]
         public async Task<IActionResult> Assign([FromBody] AssignStaffRequest request)
         {
-
-            await _orderService.AssignStaff(request);
+            var staffUserName = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+            await _orderService.AssignStaff(request, staffUserName);
             return Ok(new AppResponse<object>
             {
                 Message = "Assign thành công!"

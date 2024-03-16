@@ -29,6 +29,7 @@ namespace BirthdayBlitzAPI.Common.Extensions
             services.AddScoped<IServiceElementDetailService, ServiceElementDetailService>();
             services.AddScoped<IVoucherService, VoucherService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
     }
 }
