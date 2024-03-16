@@ -3,6 +3,7 @@ using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -24,6 +25,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([FromBody] CreateMenuRequest request)
         {
             await _menuService.Create(request);
@@ -33,6 +35,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromBody] UpdateMenuRequest request)
         {
             await _menuService.Update(request);
@@ -42,6 +45,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _menuService.Delete(id);
