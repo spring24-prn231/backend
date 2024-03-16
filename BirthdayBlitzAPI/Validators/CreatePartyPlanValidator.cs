@@ -15,17 +15,6 @@ namespace BirthdayBlitzAPI.Validators
             _partyPlanService = partyPlanService;
             _orderService = orderService;
 
-            RuleFor(x => x.Feedback)
-                .MaximumLength(255)
-                .WithMessage("Góp ý không được vượt quá 255 kí tự");
-
-            RuleFor(x => x.Note)
-                .MaximumLength(255)
-                .WithMessage("Ghi chú không vượt quá 255 kí tự");
-
-            RuleFor(x => x.Description).MaximumLength(255)
-                .WithMessage("Mô tả kế hoạch bữa tiệc không việc quá 255 kí tự");
-
             RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
                 .WithMessage("Order không tồn tại");
 
