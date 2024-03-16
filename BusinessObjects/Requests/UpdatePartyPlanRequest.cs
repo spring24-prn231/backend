@@ -8,7 +8,6 @@ namespace BusinessObjects.Requests
 {
     public class UpdatePartyPlanRequest : BaseUpdateRequest
     {
-        public Guid OrderId { get; set; }
 
         public DateTime? TimeStart { get; set; }
 

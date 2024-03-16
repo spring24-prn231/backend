@@ -5,6 +5,7 @@ using BusinessObjects.Requests;
 using BusinessObjects.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Services.Implements;
 using Services.Interfaces;
 using System.Security.Claims;
@@ -87,6 +88,15 @@ namespace BirthdayBlitzAPI.Controllers
             {
                 Message = MessageResponse.DeleteSuccess
             });
+        }
+        [HttpGet("count")]
+        public async Task<IActionResult> Count()
+        {
+            var response = await _orderService.GetAll().CountAsync();
+            return Ok(new AppResponse<object>
+            {
+                Data = response
+            }) ;
         }
     }
 }

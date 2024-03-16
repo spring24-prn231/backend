@@ -14,5 +14,6 @@ namespace BusinessObjects.Models
         public string? Fullname { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
+        public bool Status = true;
     }
 }

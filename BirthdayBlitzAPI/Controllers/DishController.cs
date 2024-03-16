@@ -33,7 +33,7 @@ namespace BirthdayBlitzAPI.Controllers
         }
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Update([FromBody] UpdateDishRequest request)
+        public async Task<IActionResult> Update([FromForm] UpdateDishRequest request)
         {
             await _dishService.Update(request);
             return Ok(new AppResponse<object>
