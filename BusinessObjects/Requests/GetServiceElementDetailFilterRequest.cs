@@ -7,7 +7,6 @@ namespace BusinessObjects.Requests
 {
     public class GetServiceElementDetailFilterRequest : BasePaginationRequest
     {
-        public Guid? Id { get; set; }
         
         public Guid? ServiceElementId { get; set; }
 

@@ -6,7 +6,6 @@ namespace BusinessObjects.Requests
 {
     public class GetFeedbackFilterRequest : BasePaginationRequest
     {
-        public Guid? Id { get; set; }
         public Guid? OrderId { get; set; }
         public Range<byte>? RatingStar { get; set; }
         [ToLowerContainsComparison]

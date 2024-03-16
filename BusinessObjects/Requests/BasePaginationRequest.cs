@@ -11,6 +11,7 @@ namespace BusinessObjects.Requests
 {
     public class BasePaginationRequest : OrderableFilterBase
     {
+        public Guid? Id { get; set; }
 
         [IgnoreFilter]
         [FromQuery(Name = "page")]

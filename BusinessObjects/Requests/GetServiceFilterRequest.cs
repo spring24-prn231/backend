@@ -10,7 +10,6 @@ namespace BusinessObjects.Requests
 {
     public class GetServiceFilterRequest : BasePaginationRequest
     {
-        public Guid? Id { get; set; }
         public Guid? RoomTypeId { get; set; }
 
         [ToLowerContainsComparison]
