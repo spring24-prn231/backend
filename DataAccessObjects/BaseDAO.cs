@@ -19,7 +19,7 @@ namespace DataAccessObjects
         }
         public virtual IQueryable<T> Query(bool eager = true)
         {
-            var query = _context.Set<T>().AsQueryable();
+            var query = _dbSet.AsQueryable();
             if (eager)
             {
                 var navigations = _context.Model.FindEntityType(typeof(T))
