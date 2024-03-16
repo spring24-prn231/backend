@@ -47,14 +47,14 @@ namespace Services.Implements
             }
         }
 
-        public virtual IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter
+        public virtual IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : BasePaginationRequest
         {
-            return _repo.GetAll().GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
+            return _repo.GetAll(filter.IsEager).GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAll(bool eager = true)
         {
-            return _repo.GetAll();
+            return _repo.GetAll(eager);
         }
 
         public virtual async Task<T?> GetById(Guid id)
