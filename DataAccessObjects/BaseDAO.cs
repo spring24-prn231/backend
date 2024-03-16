@@ -13,9 +13,24 @@ namespace DataAccessObjects
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        public virtual IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll(bool eager = true)
         {
-            return _dbSet.AsQueryable();
+            return Query(eager).AsQueryable();
+        }
+        public virtual IQueryable<T> Query(bool eager = true)
+        {
+            var query = _context.Set<T>().AsQueryable();
+            if (eager)
+            {
+                var navigations = _context.Model.FindEntityType(typeof(T))
+                    .GetDerivedTypesInclusive()
+                    .SelectMany(type => type.GetNavigations())
+                    .Distinct();
+
+                foreach (var property in navigations)
+                    query = query.Include(property.Name);
+            }
+            return query;
         }
         public virtual async Task Create(T entity)
         {
