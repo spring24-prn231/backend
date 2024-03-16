@@ -15,6 +15,7 @@ namespace BirthdayBlitzAPI.Validators
             _partyPlanService = partyPlanService;
             _orderService = orderService;
 
+            //Update Later by Khanh-lof
             RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
                 .WithMessage("Order không tồn tại");
 

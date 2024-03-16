@@ -5,21 +5,20 @@ using Services.Interfaces;
 
 namespace BirthdayBlitzAPI.Validators
 {
-    public class UpdatePartyPlanListValidator : AbstractValidator<List<CreatePartyPlanRequest>>
+    public class UpdatePartyPlanListValidator : AbstractValidator<List<UpdatePartyPlanRequest>>
     {
         private readonly IPartyPlanService _partyPlanService;
+        private readonly IOrderService _orderService;
 
-        public UpdatePartyPlanListValidator(IPartyPlanService partyPlanService)
+        public UpdatePartyPlanListValidator(IPartyPlanService partyPlanService, IOrderService orderService)
         {
             _partyPlanService = partyPlanService;
+            _orderService = orderService;
+
+            var updatePartyPlanValidator = new UpdatePartyPlanValidator(partyPlanService, orderService);
 
             RuleForEach(x => x)
-                .MustAsync(async (request, cancellationToken) => !await _partyPlanService.GetAll().AnyAsync(r => r.TimeStart == request.TimeStart, cancellationToken))
-                .WithMessage("Thời gian bắt đầu đã tồn tại")
-                .MustAsync(async (request, cancellationToken) => !await _partyPlanService.GetAll().AnyAsync(r => r.TimeEnd == request.TimeEnd, cancellationToken))
-                .WithMessage("Thời gian kết thúc đã tồn tại")
-                .Must((request) => request.TimeStart < request.TimeEnd)
-                .WithMessage("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc");
+                .SetValidator(updatePartyPlanValidator);
         }
     }
 }

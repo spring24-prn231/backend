@@ -8,18 +8,17 @@ namespace BirthdayBlitzAPI.Validators
     public class CreatePartyPlanListValidator : AbstractValidator<List<CreatePartyPlanRequest>>
     {
         private readonly IPartyPlanService _partyPlanService;
+        private readonly IOrderService _orderService;
 
-        public CreatePartyPlanListValidator(IPartyPlanService partyPlanService)
+        public CreatePartyPlanListValidator(IPartyPlanService partyPlanService, IOrderService orderService)
         {
             _partyPlanService = partyPlanService;
+            _orderService = orderService;
+
+            var createPartyPlanValidator = new CreatePartyPlanValidator(partyPlanService, orderService);
 
             RuleForEach(x => x)
-                .MustAsync(async (request, cancellationToken) => !await _partyPlanService.GetAll().AnyAsync(r => r.TimeStart == request.TimeStart, cancellationToken))
-                .WithMessage("Thời gian bắt đầu đã tồn tại")
-                .MustAsync(async (request, cancellationToken) => !await _partyPlanService.GetAll().AnyAsync(r => r.TimeEnd == request.TimeEnd, cancellationToken))
-                .WithMessage("Thời gian kết thúc đã tồn tại")
-                .Must((request) => request.TimeStart < request.TimeEnd)
-                .WithMessage("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc");
+                .SetValidator(createPartyPlanValidator);
         }
     }
 }
