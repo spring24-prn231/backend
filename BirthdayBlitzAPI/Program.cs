@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Services.Implements;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
 using System.Text;
@@ -21,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -38,6 +41,7 @@ builder.Configuration.AddUserSecrets<BirthdayBlitzContext>();
 //builder.Services.AddSwaggerGenNewtonsoftSupport();
 builder.Services.AddDbContext<BirthdayBlitzContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BirthdayBlitz")));
 builder.Services.AddDI();
+builder.Services.AddHostedService<InitializeAdminAccountService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

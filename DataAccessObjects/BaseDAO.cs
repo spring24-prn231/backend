@@ -13,9 +13,24 @@ namespace DataAccessObjects
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        public virtual IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll(bool eager = true)
         {
-            return _dbSet.AsQueryable();
+            return Query(eager).AsQueryable();
+        }
+        public virtual IQueryable<T> Query(bool eager = true)
+        {
+            var query = _dbSet.AsQueryable();
+            if (eager)
+            {
+                var navigations = _context.Model.FindEntityType(typeof(T))
+                    .GetDerivedTypesInclusive()
+                    .SelectMany(type => type.GetNavigations())
+                    .Distinct();
+
+                foreach (var property in navigations)
+                    query = query.Include(property.Name);
+            }
+            return query;
         }
         public virtual async Task Create(T entity)
         {
@@ -44,8 +59,8 @@ namespace DataAccessObjects
             {
                 try
                 {
-                    var tracker = _context.Attach(entity);
-                    tracker.State = EntityState.Modified;
+                    //var tracker = _context.Attach(entity);
+                    //tracker.State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     break;
                 }
@@ -84,12 +99,12 @@ namespace DataAccessObjects
 
         public async Task<T?> GetById(Guid id)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbSet.GetQueryStatusTrue().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<T?> GetByIdNoTracking(Guid id)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
+            return await _dbSet.GetQueryStatusTrue().AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
         }
     }
 }

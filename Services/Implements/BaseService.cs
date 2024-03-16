@@ -8,11 +8,6 @@ using BusinessObjects.Requests;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Implements
 {
@@ -27,7 +22,15 @@ namespace Services.Implements
         }
         public virtual async Task Create<TReq>(TReq entity) where TReq : class
         {
-            var newEntity = _mapper.Map<T>(entity);
+            T? newEntity = null;
+            if (entity is not T)
+            {
+                newEntity = _mapper.Map<T>(entity);
+            }
+            else
+            {
+                newEntity = entity as T;
+            }
             await _repo.Create(newEntity);
         }
 
@@ -44,14 +47,14 @@ namespace Services.Implements
             }
         }
 
-        public virtual IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter
+        public virtual IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : BasePaginationRequest
         {
-            return _repo.GetAll().GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
+            return _repo.GetAll(filter.IsEager).GetQueryStatusTrue().ApplyFilter(filter).AsNoTracking();
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAll(bool eager = true)
         {
-            return _repo.GetAll();
+            return _repo.GetAll(eager);
         }
 
         public virtual async Task<T?> GetById(Guid id)

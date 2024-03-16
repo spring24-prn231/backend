@@ -27,9 +27,9 @@ namespace Repositories
             await _dao.Update(entity);
         }
 
-        public virtual IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll(bool eager = true)
         {
-            return _dao.GetAll();
+            return _dao.GetAll(eager);
         }
 
         public virtual async Task<T?> GetById(Guid id)

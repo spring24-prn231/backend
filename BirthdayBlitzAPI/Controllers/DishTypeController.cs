@@ -2,6 +2,7 @@
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -21,6 +22,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([FromBody]CreateDishTypeRequest request)
         {
             await _dishTypeService.Create(request);
@@ -30,6 +32,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromBody]UpdateDishTypeRequest request)
         {
             await _dishTypeService.Update(request);
@@ -38,7 +41,8 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
-        [HttpDelete("{id}")]    
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _dishTypeService.Delete(id);

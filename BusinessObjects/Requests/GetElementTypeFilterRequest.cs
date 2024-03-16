@@ -9,7 +9,6 @@ namespace BusinessObjects.Requests
 {
     public class GetElementTypeFilterRequest : BasePaginationRequest
     {
-        public Guid? Id { get; set; }
         [ToLowerContainsComparison]
         [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]
         public string? Name { get; set; }

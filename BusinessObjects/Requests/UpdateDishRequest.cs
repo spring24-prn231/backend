@@ -1,5 +1,6 @@
 ﻿using AutoFilterer.Attributes;
 using AutoFilterer.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BusinessObjects.Requests
     {
         public Guid DishTypeId { get; set; }
         public string? Name { get; set; }
-        public string? Image { get; set; }
+        public IFormFile? ImageFile { get; set; }
         public string? Description { get; set; }
     }
 }

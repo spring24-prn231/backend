@@ -70,12 +70,14 @@ namespace Services.Implements
         public async Task<TokenModel?> Login(LoginRequest loginModel)
         {
             var user = await _userManager.FindByNameAsync(loginModel.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            if (user != null && user.Status && await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
+                    new (ClaimTypes.Email, user.Email),
+                    new (ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new (ClaimTypes.Name, user.UserName),
                     new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
@@ -99,6 +101,10 @@ namespace Services.Implements
                     AccessToken = accessToken,
                     RefreshToken = refreshToken,
                 };
+            }
+            else if(user != null)
+            {
+                await _userManager.AccessFailedAsync(user);
             }
             return null;
         }
@@ -126,7 +132,7 @@ namespace Services.Implements
 
             var user = await _userManager.FindByNameAsync(username);
 
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now || !user.Status)
             {
                 return null;
             }

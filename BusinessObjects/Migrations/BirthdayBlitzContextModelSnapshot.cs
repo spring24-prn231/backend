@@ -326,8 +326,13 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("EventStart")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal?>("MaxGuest")
-                        .HasColumnType("decimal(20, 1)");
+                    b.Property<int?>("ExecutionStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int?>("MaxGuest")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

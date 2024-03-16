@@ -2,6 +2,7 @@
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Implements;
 using Services.Interfaces;
@@ -22,6 +23,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([FromBody] CreateRoomRequest request)
         {
             await _roomService.Create(request);
@@ -31,6 +33,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromBody] UpdateRoomRequest request)
         {
             await _roomService.Update(request);
@@ -40,6 +43,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _roomService.Delete(id);

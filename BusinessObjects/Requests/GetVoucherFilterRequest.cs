@@ -12,7 +12,6 @@ namespace BusinessObjects.Requests
 {
     public class GetVoucherFilterRequest : BasePaginationRequest
     {
-        public Guid? Id { get; set; }
         public Guid? OrderId { get; set; }
         [ToLowerContainsComparison]
         [StringFilterOptions(StringFilterOption.Contains, StringComparison.InvariantCultureIgnoreCase)]

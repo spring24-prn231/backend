@@ -10,7 +10,6 @@ namespace BusinessObjects.Requests
 {
     public class GetDepositFilterRequest : BasePaginationRequest
     {
-        public Guid? Id { get; set; }
         public Guid? OrderId { get; set; }
 
         public Range<decimal>? Value { get; set; }
