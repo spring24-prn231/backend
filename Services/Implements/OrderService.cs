@@ -13,14 +13,26 @@ namespace Services.Implements
     public class OrderService : BaseService<Order>, IOrderService
     {
         private readonly IServiceService _serviceService;
+        private readonly IMenuService _menuService;
+        private readonly IServiceElementDetailService _serviceElementDetailService;
+        private readonly INotificationService _notificationService;
         private readonly AzureBlobService _blobService;
-        public OrderService(IBaseRepository<Order> repository, IMapper mapper, IServiceService serviceService, AzureBlobService blobService) : base(repository, mapper)
+        public OrderService(IBaseRepository<Order> repository, 
+                            IMapper mapper, 
+                            IServiceService serviceService, 
+                            AzureBlobService blobService,
+                            IMenuService menuService,
+                            IServiceElementDetailService serviceElementDetailService,
+                            INotificationService notificationService) : base(repository, mapper)
         {
+            _notificationService = notificationService;
+            _serviceElementDetailService = serviceElementDetailService;
+            _menuService = menuService;
             _serviceService = serviceService;
             _blobService = blobService;
         }
 
-        public async Task AssignStaff(AssignStaffRequest request)
+        public async Task AssignStaff(AssignStaffRequest request, string staffUserName)
         {
             var order = await _repo.GetById(request.OrderId);
             if(order.ExecutionStatus != (int)OrderStatus.EXECUTING)
@@ -28,6 +40,7 @@ namespace Services.Implements
                 order.ExecutionStatus = (int)OrderStatus.EXECUTING;
                 await _repo.Update(order);
             }
+            await _notificationService.Create(new Notification() { Content = "Order mới được phân công cho bạn!", Role =  staffUserName});
         }
 
         public async Task Create<TReq>(TReq entity, Guid userId)
@@ -41,13 +54,24 @@ namespace Services.Implements
                 newService.UserId = userId;
                 await _serviceService.Create(newService);
                 newOrder.ServiceId = newService?.Id;
+                //Create Menu
+                foreach (var dishId in createOrderRequest?.NewService.DishIds)
+                {
+                    await _menuService.Create(new Menu { DishId = dishId, ServiceId = newOrder.ServiceId });
+                }
+                //Create ServiceElementDetail
+                foreach (var serviceElementId in createOrderRequest?.NewService.ServiceElementIds)
+                {
+                    await _serviceElementDetailService.Create(new ServiceElementDetail { ServiceElementId = serviceElementId, ServiceId = newOrder.ServiceId.Value });
+                }
+
             }
             else if(createOrderRequest?.RecommendServiceId != null)
             {
                 newOrder.ServiceId = createOrderRequest?.RecommendServiceId;
             }
             await _repo.Create(newOrder);
-            //TODO Create Menu, ServiceElementDetails
+            await _notificationService.Create(new Notification() { Content="Có đơn đặt tiệc mới", Role = UserRole.ADMIN.ToString()});
         }
 
         public async Task<bool> DoneOrder(DoneOrderRequest request, Guid staffId)
