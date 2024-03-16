@@ -2,6 +2,6 @@
 {
     public enum OrderStatus
     {
-        NEW = 1, EXECUTING = 2, DONE = 3
+        NEW = 1, ASSIGNED = 2, EXECUTING = 3, DONE = 4
     }
 }
