@@ -5,6 +5,7 @@ using BusinessObjects.Models;
 using BusinessObjects.Requests;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Services.Interfaces;
 
@@ -16,10 +17,10 @@ namespace Services.Implements
         private readonly IMenuService _menuService;
         private readonly IServiceElementDetailService _serviceElementDetailService;
         private readonly INotificationService _notificationService;
-        private readonly AzureBlobService _blobService;
-        public OrderService(IBaseRepository<Order> repository, 
-                            IMapper mapper, 
-                            IServiceService serviceService, 
+        private readonly AzureBlobService _azureBlobService;
+        public OrderService(IBaseRepository<Order> repository,
+                            IMapper mapper,
+                            IServiceService serviceService,
                             AzureBlobService blobService,
                             IMenuService menuService,
                             IServiceElementDetailService serviceElementDetailService,
@@ -29,18 +30,25 @@ namespace Services.Implements
             _serviceElementDetailService = serviceElementDetailService;
             _menuService = menuService;
             _serviceService = serviceService;
-            _blobService = blobService;
+            _azureBlobService = blobService;
+        }
+
+        public async Task Approve(ApprovePlanRequest request)
+        {
+            var order = await _repo.GetAll().FirstOrDefaultAsync(x=>x.Id == request.OrderId);
+            order.ExecutionStatus = (int)OrderStatus.EXECUTING;
+            await _repo.Update(order);
+            var staffUserName = order.Staff.UserName;
+            await _notificationService.Create(new Notification() { Content = "Order của bạn đã được duyệt!", Role = staffUserName });
         }
 
         public async Task AssignStaff(AssignStaffRequest request, string staffUserName)
         {
             var order = await _repo.GetById(request.OrderId);
-            if(order.ExecutionStatus != (int)OrderStatus.EXECUTING)
-            {
-                order.ExecutionStatus = (int)OrderStatus.EXECUTING;
-                await _repo.Update(order);
-            }
-            await _notificationService.Create(new Notification() { Content = "Order mới được phân công cho bạn!", Role =  staffUserName});
+            order.ExecutionStatus = (int)OrderStatus.ASSIGNED;
+            order.StaffId = request.StaffId;
+            await _repo.Update(order);
+            await _notificationService.Create(new Notification() { Content = "Order mới được phân công cho bạn!", Role = staffUserName });
         }
 
         public async Task Create<TReq>(TReq entity, Guid userId)
@@ -66,19 +74,19 @@ namespace Services.Implements
                 }
 
             }
-            else if(createOrderRequest?.RecommendServiceId != null)
+            else if (createOrderRequest?.RecommendServiceId != null)
             {
                 newOrder.ServiceId = createOrderRequest?.RecommendServiceId;
             }
             await _repo.Create(newOrder);
-            await _notificationService.Create(new Notification() { Content="Có đơn đặt tiệc mới", Role = UserRole.ADMIN.ToString()});
+            await _notificationService.Create(new Notification() { Content = "Có đơn đặt tiệc mới", Role = UserRole.ADMIN.ToString() });
         }
 
         public async Task<bool> DoneOrder(DoneOrderRequest request, Guid staffId)
         {
             var rs = false;
             var order = await _repo.GetById(request.OrderId);
-            if(order?.StaffId == staffId)
+            if (order?.StaffId == staffId)
             {
                 rs = true;
                 order.ExecutionStatus = (int)OrderStatus.DONE;
@@ -89,16 +97,18 @@ namespace Services.Implements
 
         public override async Task Update<TReq>(TReq entityRequest)
         {
-            var orderUpdate = entityRequest as UpdateOrderRequest;
-            if (orderUpdate != null)
+            if (entityRequest is UpdateOrderRequest orderUpdate)
             {
                 var entity = await _repo.GetById(entityRequest.Id);
                 if (entity != null)
                 {
-                    var fileName = $"Contract_{orderUpdate.Id}.{Path.GetExtension(orderUpdate.ContractFile.FileName)}";
-                    var contractLinks = await _blobService.UploadFiles(new List<IFormFile> { orderUpdate.ContractFile }, fileName, StorageType.Contract);
+                    if (orderUpdate.ContractFile != null)
+                    {
+                        var fileName = $"Contract_{orderUpdate.Id}.{Path.GetExtension(orderUpdate?.ContractFile.FileName)}";
+                        var contractLinks = await _azureBlobService.UploadFiles(new List<IFormFile> { orderUpdate.ContractFile }, fileName, StorageType.Contract);
+                        entity.Contract = contractLinks.FirstOrDefault();
+                    }
                     _mapper.Map(entityRequest, entity);
-                    entity.Contract = contractLinks.FirstOrDefault();
                     await _repo.Update(entity);
                 }
                 else

@@ -8,5 +8,6 @@ namespace Services.Interfaces
         Task Create<TReq>(TReq entity, Guid userId);
         Task AssignStaff(AssignStaffRequest request, string staffUserName);
         Task<bool> DoneOrder(DoneOrderRequest request, Guid staffId);
+        Task Approve(ApprovePlanRequest request);
     }
 }
