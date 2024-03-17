@@ -49,7 +49,7 @@ namespace BirthdayBlitzAPI.Controllers
         }
         [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Acitvate(Guid id)
+        public async Task<IActionResult> Activate(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null || !await _userManager.IsInRoleAsync(user, UserRole.USER.ToString()))

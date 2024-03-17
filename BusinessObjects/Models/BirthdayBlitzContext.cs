@@ -69,6 +69,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
         modelBuilder.Entity<ApplicationUser>(entity =>
         {
             entity.Property(e => e.Fullname).HasMaxLength(255);
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
         });
         modelBuilder.Entity<ApplicationUser>().HasIndex(e => e.Email).IsUnique();
         modelBuilder.Entity<ApplicationUser>().HasIndex(e => e.PhoneNumber).IsUnique();
