@@ -24,10 +24,25 @@ namespace BirthdayBlitzAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetUserFilterRequest filter)
         {
-            var roles = HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToList();
-            var _ = Guid.TryParse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out Guid userId);
-            var queryRs = _userManager.Users.ApplyFilter(filter).Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id , x.Status});
-            if (roles.Count == 1 && roles.Contains(UserRole.USER.ToString())) queryRs = queryRs.Where(x => x.Id == userId);
+            var roles = HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToList(); var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            if (roles.Count == 1 && roles.Contains(UserRole.USER.ToString()))
+            {
+                var userResponse = new AppResponse<object>
+                {
+                    Status = StatusResponse.BadRequest,
+                    Message = "Lấy thông tin không thành công"
+                };
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null) return GetResponse(userResponse);
+                var users = new List<ApplicationUser>
+                {
+                    user
+                };
+                userResponse.Status = StatusResponse.Success;
+                userResponse.Data = users.Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id }).FirstOrDefault();
+                return GetResponse(userResponse);
+            }
+            var queryRs = (await _userManager.GetUsersInRoleAsync(UserRole.USER.ToString())).Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id, x.Status });
             var response = await queryRs.GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
