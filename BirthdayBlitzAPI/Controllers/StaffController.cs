@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoFilterer.Extensions;
-using AutoMapper;
-using Azure;
 using BusinessObjects.Common.Constants;
 using BusinessObjects.Common.Enums;
+using BusinessObjects.Common.Exceptions;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Models;
 using BusinessObjects.Requests;
@@ -18,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces;
+using System.Security.Claims;
 
 namespace BirthdayBlitzAPI.Controllers
 {
