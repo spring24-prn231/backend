@@ -8,6 +8,7 @@ using Services.Interfaces;
 
 namespace BirthdayBlitzAPI.Controllers
 {
+    [Route("api/v1/[controller]es/")]
     public class DishController : ApiControllerBase 
     {
         private readonly IDishService _dishService;

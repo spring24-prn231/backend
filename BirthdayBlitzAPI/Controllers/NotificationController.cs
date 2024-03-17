@@ -23,5 +23,15 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await _notificationService.Get(filter).ToListAsync();
             return Ok(new AppResponse<List<Notification>> { Data = response });
         }
+        [Authorize]
+        [HttpPut("confirm-receive/{notiId}")]
+        public async Task<IActionResult> Update(Guid notiId)
+        {
+            await _notificationService.Confirm(notiId);
+            return Ok(new AppResponse<object>
+            {
+                Message = "Xác nhận thành công"
+            });
+        }
     }
 }

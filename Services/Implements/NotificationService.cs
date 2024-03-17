@@ -1,5 +1,6 @@
 ﻿using AutoFilterer.Extensions;
 using AutoMapper;
+using BusinessObjects.Common.Exceptions;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,20 @@ namespace Services.Implements
             {
                 newEntity.Status = false;
                 await base.Create(newEntity);
+            }
+        }
+
+        public async Task Confirm(Guid id)
+        {
+            var entity = await _repo.GetById(id);
+            if (entity != null)
+            {
+                entity.Status = true;
+                await _repo.Update(entity);
+            }
+            else
+            {
+                throw new NotFoundException();
             }
         }
     }

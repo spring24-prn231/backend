@@ -48,8 +48,9 @@ namespace BirthdayBlitzAPI.Controllers
                 userResponse.Data = users.Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id }).FirstOrDefault();
                 return GetResponse(userResponse);
             }
-            var allStaff = (await _userManager.GetUsersInRoleAsync(UserRole.HOST_STAFF.ToString())).ToList();
-            allStaff.AddRange(await _userManager.GetUsersInRoleAsync(UserRole.IMPLEMENT_STAFF.ToString()));
+            var allStaff = new List<ApplicationUser>();
+            if(filter.GetHostStaff) allStaff.AddRange(await _userManager.GetUsersInRoleAsync(UserRole.HOST_STAFF.ToString()));
+            if (filter.GetImplementStaff) allStaff.AddRange(await _userManager.GetUsersInRoleAsync(UserRole.IMPLEMENT_STAFF.ToString()));
             var queryRs = allStaff.Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id, x.Status });
 
             var response = await queryRs.GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);

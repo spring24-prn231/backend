@@ -51,7 +51,7 @@ namespace Services.Implements
                             ServiceId = service.Id,
                             ServiceElementId = elementId
                         };
-                        _serviceElementDetailService.Create(serviceElementDetail);
+                        await _serviceElementDetailService.Create(serviceElementDetail);
                     }
                     foreach (var dishId in request.DishIds)
                     {
@@ -60,7 +60,7 @@ namespace Services.Implements
                             ServiceId = service.Id,
                             DishId = dishId
                         };
-                        _menuService.Create(menu);
+                        await _menuService.Create(menu);
                     }
                     await _repo.Update(service);
                 }
@@ -79,25 +79,23 @@ namespace Services.Implements
         {
             var request = entityRequest as CreateServiceRequest;
             var service = _mapper.Map<Service>(request);
+            await _repo.Create(service);
             foreach (var elementId in request.ServiceElementIds)
             {
-                var serviceElementDetail = new ServiceElementDetail
+                await _serviceElementDetailService.Create(new ServiceElementDetail
                 {
                     ServiceId = service.Id,
                     ServiceElementId = elementId
-                };
-                _serviceElementDetailService.Create(serviceElementDetail);
+                });
             }
             foreach (var dishId in request.DishIds)
             {
-                var menu = new Menu
+                await _menuService.Create(new Menu
                 {
                     ServiceId = service.Id,
                     DishId = dishId
-                };
-                _menuService.Create(menu);
+                });
             }
-            await _repo.Create(service);
         }
     }
 }

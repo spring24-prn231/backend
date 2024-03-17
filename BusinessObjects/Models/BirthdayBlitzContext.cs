@@ -66,6 +66,15 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<PartyPlanAssignment>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.HasOne(d => d.Staff).WithMany(p => p.PartyPlans)
+                .HasForeignKey(d => d.StaffId);
+            entity.HasOne(d => d.PartyPlan).WithMany(p => p.Staffs)
+                .HasForeignKey(d => d.PartyPlanId);
+        });
         modelBuilder.Entity<ApplicationUser>(entity =>
         {
             entity.Property(e => e.Fullname).HasMaxLength(255);

@@ -2,6 +2,7 @@
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Implements;
 using Services.Interfaces;
@@ -22,6 +23,7 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await _orderDetailService.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
+        [Authorize(Roles = "HOST_STAFF")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderDetailRequest request)
         {
@@ -31,6 +33,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Authorize(Roles = "HOST_STAFF")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateOrderDetailRequest request)
         {
@@ -40,6 +43,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Authorize(Roles = "HOST_STAFF")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

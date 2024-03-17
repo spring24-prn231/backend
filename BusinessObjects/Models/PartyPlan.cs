@@ -18,4 +18,6 @@ public partial class PartyPlan : BaseModel
     public string? Feedback { get; set; }
 
     public virtual Order? Order { get; set; }
+    public virtual ICollection<PartyPlanAssignment> Staffs { get; set; } = new List<PartyPlanAssignment>();
+
 }

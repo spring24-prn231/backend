@@ -12,8 +12,10 @@ namespace BirthdayBlitzAPI.Controllers
     {
         private readonly IPartyPlanService _partyPlanService;
         private readonly IOrderService _orderService;
-        public PartyPlanController(IPartyPlanService partyPlanService, IOrderService orderService) 
+        private readonly IPartyPlanAssignmentService _partyPlanAssignmentService;
+        public PartyPlanController(IPartyPlanService partyPlanService, IOrderService orderService, IPartyPlanAssignmentService partyPlanAssignmentService) 
         {
+            _partyPlanAssignmentService = partyPlanAssignmentService;
             _orderService = orderService;
             _partyPlanService = partyPlanService;
         }
@@ -90,6 +92,16 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(new AppResponse<object>
             {
                 Message = MessageResponse.UpdateSuccess
+            });
+        }
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("staff-assigment")]
+        public async Task<IActionResult> AssignStaff([FromBody] AssignStaffPlanRequest request)
+        {
+            await _partyPlanAssignmentService.Create(request);
+            return Ok(new AppResponse<object>
+            {
+                Message = "Assign thành công"
             });
         }
     }
