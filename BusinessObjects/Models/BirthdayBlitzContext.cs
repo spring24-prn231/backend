@@ -243,6 +243,7 @@ public partial class BirthdayBlitzContext : IdentityDbContext<ApplicationUser, I
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Status).HasDefaultValueSql("1");
+            entity.Property(e => e.Price).HasColumnType("decimal(20, 1)");
 
             entity.HasOne(d => d.RoomType).WithMany(p => p.Rooms)
                 .HasForeignKey(d => d.RoomTypeId)
