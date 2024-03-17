@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.Common.Constants;
 using BusinessObjects.Models;
+using BusinessObjects.Requests;
 using BusinessObjects.Requests.Authentication;
 using BusinessObjects.Responses;
 using Microsoft.AspNetCore.Identity;
@@ -167,6 +168,27 @@ namespace Services.Implements
             {
                 if (!await _roleManager.RoleExistsAsync(UserRole.USER.ToString())) await _roleManager.CreateAsync(new IdentityRole<Guid>(UserRole.USER.ToString()));
                 await _userManager.AddToRoleAsync(user, UserRole.USER.ToString());
+            }
+            return rs;
+        }
+        public async Task<IdentityResult> RegisterStaff(CreateStaffRequest registerModel)
+        {
+            var user = new ApplicationUser()
+            {
+                Email = registerModel.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = registerModel.Username,
+                PhoneNumber = registerModel.PhoneNumber,
+                Fullname = registerModel.Fullname
+            };
+            var rs = await _userManager.CreateAsync(user, registerModel.Password);
+            if(rs.Succeeded)
+            {
+                if (!await _roleManager.RoleExistsAsync(UserRole.HOST_STAFF.ToString())) await _roleManager.CreateAsync(new IdentityRole<Guid>(UserRole.HOST_STAFF.ToString()));
+                await _userManager.AddToRoleAsync(user, UserRole.HOST_STAFF.ToString());
+
+                if (!await _roleManager.RoleExistsAsync(UserRole.IMPLEMENT_STAFF.ToString())) await _roleManager.CreateAsync(new IdentityRole<Guid>(UserRole.IMPLEMENT_STAFF.ToString()));
+                await _userManager.AddToRoleAsync(user, UserRole.IMPLEMENT_STAFF.ToString());
             }
             return rs;
         }

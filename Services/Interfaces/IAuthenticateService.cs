@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Requests.Authentication;
+﻿using BusinessObjects.Requests;
+using BusinessObjects.Requests.Authentication;
 using BusinessObjects.Responses;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -12,6 +13,7 @@ namespace Services.Interfaces
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
         Task<TokenModel?> Login(LoginRequest loginModel);
         Task<IdentityResult> RegisterUser(RegisterRequest registerModel);
+        Task<IdentityResult> RegisterStaff(CreateStaffRequest request);
         Task<TokenModel?> RefreshToken(TokenModel tokenModel);
     }
 }
