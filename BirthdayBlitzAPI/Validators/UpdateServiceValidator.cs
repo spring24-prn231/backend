@@ -12,10 +12,12 @@ namespace BirthdayBlitzAPI.Validators
     {
         private readonly IServiceElementService _serviceElementService;
         private readonly IMenuService _menuService;
-        public UpdateServiceValidator(IServiceElementService serviceElementService, IMenuService menuService)
+        private readonly IDishService _dishService;
+        public UpdateServiceValidator(IServiceElementService serviceElementService, IMenuService menuService, IDishService dishService)
         {
             _serviceElementService = serviceElementService;
             _menuService = menuService;
+            _dishService = dishService;
             RuleFor(x => x.Name)
                 .MaximumLength(100)
                 .WithMessage("Tên dịch vụ không được quá 100 ký tự");
@@ -23,15 +25,17 @@ namespace BirthdayBlitzAPI.Validators
                 .MaximumLength(255)
                 .WithMessage("Mô tả dịch vụ không được quá 255 kýtự");
             RuleForEach(x => x.ServiceElementIds)
-                .ChildRules(child => {
+                .ChildRules(child =>
+                {
                     child.RuleFor(x => x)
                         .MustAsync(async (y, cancellationToken) => await _serviceElementService.GetByIdNoTracking(y) != null)
                         .WithMessage("ServiceElement không tồn tại");
                 });
             RuleForEach(x => x.DishIds)
-                .ChildRules(child => {
+                .ChildRules(child =>
+                {
                     child.RuleFor(x => x)
-                        .MustAsync(async (y, cancellationToken) => await _menuService.GetByIdNoTracking(y) != null)
+                        .MustAsync(async (y, cancellationToken) => await _dishService.GetByIdNoTracking(y) != null)
                         .WithMessage("Món ăn không tồn tại trong Menu");
                 });
         }

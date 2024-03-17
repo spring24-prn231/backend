@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessObjects.Requests;
 using FluentValidation;
+using Services.Implements;
 using Services.Interfaces;
 
 namespace BirthdayBlitzAPI.Validators
@@ -14,11 +15,13 @@ namespace BirthdayBlitzAPI.Validators
         private readonly IRoomTypeService _roomTypeService;
         private readonly IServiceElementService _serviceElementService;
         private readonly IMenuService _menuService;
-        public CreateServiceValidator(IRoomTypeService roomTypeService, IServiceElementService serviceElementService, IMenuService menuService)
+        private readonly IDishService _dishService;
+        public CreateServiceValidator(IRoomTypeService roomTypeService, IServiceElementService serviceElementService, IMenuService menuService, IDishService dishService)
         {
             _roomTypeService = roomTypeService;
             _menuService = menuService;
             _serviceElementService = serviceElementService;
+            _dishService = dishService;
             RuleFor(x => x.Name)
                 .MaximumLength(100)
                 .WithMessage("Tên dịch vụ không được quá 100 ký tự");
@@ -36,7 +39,7 @@ namespace BirthdayBlitzAPI.Validators
             RuleForEach(x => x.DishIds)
                 .ChildRules(child => {
                     child.RuleFor(x => x)
-                        .MustAsync(async (y, cancellationToken) => await _menuService.GetByIdNoTracking(y) != null)
+                        .MustAsync(async (y, cancellationToken) => await _dishService.GetByIdNoTracking(y) != null)
                         .WithMessage("Món ăn không tồn tại trong Menu");
                 });
         }
