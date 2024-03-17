@@ -13,7 +13,7 @@ namespace BirthdayBlitzAPI.Validators
         public UpdateStaffValidator()
         {
             RuleFor(x => x.Role)
-                .Must(x => x == "HOST_STAFF" || x == "IMPLEMENT_STAFF")
+                .Must(x => x == null || x == "HOST_STAFF" || x == "IMPLEMENT_STAFF")
                 .WithMessage("Role không hợp lệ");
         }
     }

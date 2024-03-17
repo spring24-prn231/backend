@@ -184,11 +184,7 @@ namespace Services.Implements
             var rs = await _userManager.CreateAsync(user, registerModel.Password);
             if(rs.Succeeded)
             {
-                if (!await _roleManager.RoleExistsAsync(UserRole.HOST_STAFF.ToString())) await _roleManager.CreateAsync(new IdentityRole<Guid>(UserRole.HOST_STAFF.ToString()));
-                await _userManager.AddToRoleAsync(user, UserRole.HOST_STAFF.ToString());
-
-                if (!await _roleManager.RoleExistsAsync(UserRole.IMPLEMENT_STAFF.ToString())) await _roleManager.CreateAsync(new IdentityRole<Guid>(UserRole.IMPLEMENT_STAFF.ToString()));
-                await _userManager.AddToRoleAsync(user, UserRole.IMPLEMENT_STAFF.ToString());
+                await _userManager.AddToRoleAsync(user, registerModel.Role);
             }
             return rs;
         }
