@@ -13,7 +13,7 @@ namespace BirthdayBlitzAPI.Validators
         {
             RuleFor(x => x.Value).GreaterThanOrEqualTo(0)
                 .WithMessage("Tiền đặt cọc phải lớn hơn 0đ")
-                .PrecisionScale(1, 20, false)
+                .PrecisionScale(20, 1, false)
                 .WithMessage("Tiền đặt cọc không hợp lệ");
         }
     }

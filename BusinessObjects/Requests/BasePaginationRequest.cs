@@ -19,5 +19,7 @@ namespace BusinessObjects.Requests
         [IgnoreFilter]
         [FromQuery(Name = "pageSize")]
         public int PageSize { get; set; } = 10;
+        [IgnoreFilter]
+        public bool IsEager { get; set; } = true;
     }
 }

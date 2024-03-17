@@ -26,7 +26,7 @@ namespace BirthdayBlitzAPI.Controllers
         {
             var roles = HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToList();
             var _ = Guid.TryParse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out Guid userId);
-            var queryRs = _userManager.Users.ApplyFilter(filter).Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id });
+            var queryRs = _userManager.Users.ApplyFilter(filter).Select(x => new { x.PhoneNumber, x.Fullname, x.UserName, x.Email, x.Id , x.Status});
             if (roles.Count == 1 && roles.Contains(UserRole.USER.ToString())) queryRs = queryRs.Where(x => x.Id == userId);
             var response = await queryRs.GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
@@ -49,7 +49,7 @@ namespace BirthdayBlitzAPI.Controllers
         }
         [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Acitvate(Guid id)
+        public async Task<IActionResult> Activate(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null || !await _userManager.IsInRoleAsync(user, UserRole.USER.ToString()))

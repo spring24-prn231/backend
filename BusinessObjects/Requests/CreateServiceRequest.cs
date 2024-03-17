@@ -15,8 +15,8 @@ namespace BusinessObjects.Requests
 
         public Guid? UserId { get; set; }
 
-        public List<Guid> ServiceElementIds { get; set; } = new List<Guid>();
+        public List<Guid> ServiceElementIds { get; set; } = null!;
 
-        public List<Guid> DishIds { get; set; } = new List<Guid>();
+        public List<Guid> DishIds { get; set; } = null!;
     }
 }

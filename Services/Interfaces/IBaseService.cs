@@ -11,8 +11,8 @@ namespace Services.Interfaces
 {
     public interface IBaseService<T> where T : BaseModel
     {
-        IQueryable<T> GetAll();
-        IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : IFilter;
+        IQueryable<T> GetAll(bool eager = true);
+        IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : BasePaginationRequest;
         Task<T?> GetById(Guid id);
         Task<T?> GetByIdNoTracking(Guid id);
         Task Create<TReq>(TReq entity) where TReq : class;
