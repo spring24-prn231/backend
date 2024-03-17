@@ -9,5 +9,6 @@ namespace BusinessObjects.Requests
         public Range<int>? RoomNo { get; set; }
 
         public Range<int>? Capacity { get; set; }
+        public Range<decimal>? Price { get; set; }
     }
 }
