@@ -21,6 +21,10 @@ namespace BirthdayBlitzAPI.Controllers
         public async Task<IActionResult> Get([FromQuery] GetNotificationFilterRequest filter)
         {
             var response = await _notificationService.Get(filter).ToListAsync();
+            foreach (var item in response)
+            {
+                await _notificationService.Confirm(item.Id);
+            }
             return Ok(new AppResponse<List<Notification>> { Data = response });
         }
         [Authorize]
