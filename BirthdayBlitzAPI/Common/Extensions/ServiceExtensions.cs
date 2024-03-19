@@ -11,6 +11,9 @@ namespace BirthdayBlitzAPI.Common.Extensions
         {
             services.AddSingleton<AzureBlobService>();
             services.AddScoped(typeof(IBaseDAO<>), typeof(BaseDAO<>));
+            services.AddScoped<ITransactionDAO, TransactionDAO>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
             services.AddScoped<IFeedbackService, FeedbackService>();

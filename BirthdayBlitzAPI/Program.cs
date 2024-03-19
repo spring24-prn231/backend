@@ -1,6 +1,7 @@
 using AutoFilterer.Swagger;
 using AutoMapper.Internal;
 using BirthdayBlitzAPI.Common.Extensions;
+using BirthdayBlitzAPI.Middlewares;
 using BusinessObjects.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -120,6 +121,7 @@ app.UseHttpsRedirection();
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseSwaggerUI();
 app.UseAuthorization();
+app.UseMiddleware<DbTransactionMiddleware>();
 app.UseStaticFiles();
 app.MapControllers();
 
