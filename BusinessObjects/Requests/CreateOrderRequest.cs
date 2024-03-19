@@ -9,7 +9,7 @@ namespace BusinessObjects.Requests
         public DateTime EventStart { get; set; }
         public DateTime EventEnd { get; set; }
         public int MaxGuest { get; set; }
-        public decimal Total { get; set; }
+        public decimal? Total { get; set; } = 0;
         public string Name { get; set; } = null!;
     }
     public class ServiceOrderCreate

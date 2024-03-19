@@ -23,7 +23,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Create([FromBody] CreateVoucherRequest request)
         {
             await _voucherService.Create(request);
@@ -33,7 +33,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpPut]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Update([FromBody] UpdateVoucherRequest request)
         {
             await _voucherService.Update(request);
@@ -43,7 +43,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _voucherService.Delete(id);

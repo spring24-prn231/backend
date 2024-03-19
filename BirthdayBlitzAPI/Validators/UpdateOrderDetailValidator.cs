@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Requests;
+﻿using BusinessObjects.Common.Constants;
+using BusinessObjects.Requests;
 using FluentValidation;
 using Services.Interfaces;
 
@@ -13,7 +14,12 @@ namespace BirthdayBlitzAPI.Validators
             _orderService = orderService;
             RuleFor(x => x.OrderId)
                .MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
-               .WithMessage("Id của đơn hàng này không tồn tại");
+               .WithMessage("Id của đơn hàng này không tồn tại")
+               .MustAsync(async (x, cancellationToken) =>
+               {
+                   var order = await _orderService.GetByIdNoTracking(x);
+                   return order != null && order.ExecutionStatus != (int)OrderStatus.DONE;
+               });
             RuleFor(x => x.Price)
                 .GreaterThan(0)
                 .WithMessage("Giá tiền phải lớn hơn 0");

@@ -26,9 +26,13 @@ namespace BirthdayBlitzAPI.Controllers
             var baseQuery = _orderService.Get(filter);
             var roleList = HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Role).ToList();
             var _ = Guid.TryParse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out Guid userId);
-            if (roleList.Count == 1 && roleList.FirstOrDefault().Value == UserRole.USER.ToString())
+            if (roleList.Count == 1 && (roleList.FirstOrDefault().Value == UserRole.USER.ToString()))
             {
                 baseQuery = baseQuery.Where(x => x.UserId == userId);
+            }
+            else if (roleList.Count == 1 && (roleList.FirstOrDefault().Value == UserRole.HOST_STAFF.ToString()))
+            {
+                baseQuery = baseQuery.Where(x => x.StaffId == userId);
             }
             var response = await baseQuery.GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
@@ -79,7 +83,7 @@ namespace BirthdayBlitzAPI.Controllers
 
             return GetResponse(response);
         }
-        [Authorize(Roles = "HOST_STAFF")]
+        [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpDelete("{id}")] 
         public async Task<IActionResult> Delete(Guid id)
         {
