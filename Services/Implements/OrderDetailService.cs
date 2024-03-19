@@ -25,7 +25,8 @@ namespace Services.Implements
                 var order = await _orderService.GetByIdNoTracking(newEntity.OrderId.Value);
                 var orderUpdate = new UpdateOrderRequest
                 {
-                    Total = (newEntity.Price*newEntity.Amount) + order.Total
+                    Total = (newEntity.Price*newEntity.Amount) + order.Total,
+                    Id = newEntity.OrderId.Value,
                 };
                 await _orderService.Update(orderUpdate);
             }
