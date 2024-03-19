@@ -27,13 +27,13 @@ namespace BirthdayBlitzAPI.Validators
                 .GreaterThan(0)
                 .WithMessage("Tiền phải lớn hơn 0");
             RuleFor(x => x.Note)
-                .Length(255)
+                .MaximumLength(255)
                 .WithMessage("Ghi chú về chi tiết đơn hàng không vượt quá 255 kí tự");
             RuleFor(x => x.Amount)
                 .GreaterThan(0)
                 .WithMessage("Số lượng trong chi tiết đơn hàng phải lớn hơn 0");
             RuleFor(x => x.Type)
-                .Length(255)
+                .MaximumLength(255)
                 .WithMessage("Loại của chi tiết đơn hàng không vượt quá 255 kí tự");
         }
     }
