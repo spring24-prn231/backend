@@ -29,7 +29,7 @@ namespace BirthdayBlitzAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Create([FromBody] CreateServiceElementRequest request)
+        public async Task<IActionResult> Create([FromForm] CreateServiceElementRequest request)
         {
             await _service.Create(request);
             return Ok(new AppResponse<object>
@@ -40,7 +40,7 @@ namespace BirthdayBlitzAPI.Controllers
 
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Update([FromBody] UpdateServiceElementRequest request)
+        public async Task<IActionResult> Update([FromForm] UpdateServiceElementRequest request)
         {
             await _service.Update(request);
             return Ok(new AppResponse<object>

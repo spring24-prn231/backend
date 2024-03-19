@@ -19,12 +19,18 @@ namespace Services.Implements
 
         public override async Task Create<TReq>(TReq entity)
         {
-            var newEntityReq = entity as CreateDishRequest;
-            var newEntity = _mapper.Map<Dish>(newEntityReq);
-            var imageName = $"Dish_{newEntity.Id}.{Path.GetExtension(newEntityReq.ImageFile.FileName)}";
-            var response = await _azureBlobService.UploadFiles(new List<IFormFile> { newEntityReq.ImageFile }, imageName);
-            newEntity.Image = response.FirstOrDefault();
-            await _repo.Create(newEntity);
+            if (entity is CreateRoomRequest newEntityReq)
+            {
+                var newEntity = _mapper.Map<Dish>(newEntityReq);
+                var imageName = $"Dish_{newEntity.Id}.{Path.GetExtension(newEntityReq.ImageFile.FileName)}";
+                var response = await _azureBlobService.UploadFiles(new List<IFormFile> { newEntityReq.ImageFile }, imageName);
+                newEntity.Image = response.FirstOrDefault();
+                await _repo.Create(newEntity);
+            }
+            else
+            {
+                throw new ValidationException();
+            }
         }
 
         public override async Task Update<TReq>(TReq entityRequest)
@@ -37,7 +43,7 @@ namespace Services.Implements
                     if(dishUpdate.ImageFile != null)
                     {
                         var fileName = $"Dish_{dishUpdate.Id}.{Path.GetExtension(dishUpdate?.ImageFile.FileName)}";
-                        var contractLinks = await _azureBlobService.UploadFiles(new List<IFormFile> { dishUpdate.ImageFile }, fileName, StorageType.Image);
+                        var contractLinks = await _azureBlobService.UploadFiles(new List<IFormFile> { dishUpdate.ImageFile }, fileName);
                         entity.Image = contractLinks.FirstOrDefault();
                     }
                     _mapper.Map(entityRequest, entity);
@@ -47,6 +53,10 @@ namespace Services.Implements
                 {
                     throw new NotFoundException();
                 }
+            }
+            else
+            {
+                throw new ValidationException();
             }
         }
     }
