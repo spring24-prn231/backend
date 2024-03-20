@@ -39,21 +39,6 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
         [Transaction]
-        [Authorize(Roles = "HOST_STAFF")]
-        [HttpPost("list")]
-        public async Task<IActionResult> CreatePartyPlanByList([FromBody] List<CreatePartyPlanRequest> requests)
-        {
-            foreach (var request in requests)
-            {
-                await _partyPlanService.Create(request);
-            }
-
-            return Ok(new AppResponse<object>
-            {
-                Message = MessageResponse.CreateSuccess
-            });
-        }
-        [Transaction]
         [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdatePartyPlanRequest request)
@@ -67,12 +52,9 @@ namespace BirthdayBlitzAPI.Controllers
         [Transaction]
         [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpPut("list")]
-        public async Task<IActionResult> UpdatePartyPlan([FromBody] List<UpdatePartyPlanRequest> requests)
+        public async Task<IActionResult> UpdatePartyPlan([FromBody] List<UpdatePartyPlanRequestList> request)
         {
-            foreach (var request in requests)
-            {
-                await _partyPlanService.Update(request);
-            }
+            await _partyPlanService.UpdateList(request);
 
             return Ok(new AppResponse<object>
             {

@@ -36,7 +36,7 @@ namespace Services.Implements
 
         public virtual async Task Delete(Guid id)
         {
-            var entity = await _repo.GetAll().FirstOrDefaultAsync(x=>x.Id == id);
+            var entity = await _repo.GetAll().GetQueryStatusTrue().FirstOrDefaultAsync(x=>x.Id == id);
             if (entity != null)
             {
 
