@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Common.Constants;
+﻿using BirthdayBlitzAPI.Attributes;
+using BusinessObjects.Common.Constants;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Requests;
 using BusinessObjects.Requests.Authentication;
@@ -16,6 +17,7 @@ namespace BirthdayBlitzAPI.Controllers
         {
             _authenticateService = authenticateService;
         }
+        [Transaction]
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
@@ -36,6 +38,7 @@ namespace BirthdayBlitzAPI.Controllers
             }
             return GetResponse(response);
         }
+        [Transaction]
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -54,6 +57,7 @@ namespace BirthdayBlitzAPI.Controllers
             }
             return GetResponse(response);
         }
+        [Transaction]
         [HttpPost]
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenModel request)

@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Common.Constants;
+﻿using BirthdayBlitzAPI.Attributes;
+using BusinessObjects.Common.Constants;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
@@ -37,6 +38,7 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await baseQuery.GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
+        [Transaction]
         [Authorize(Roles ="USER")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderRequest request)
@@ -48,6 +50,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles ="HOST_STAFF")]
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] UpdateOrderRequest request)
@@ -58,6 +61,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles ="ADMIN")]
         [HttpPost("staff-assignment")]
         public async Task<IActionResult> Assign([FromBody] AssignStaffRequest request)
@@ -69,6 +73,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = "Assign thành công!"
             });
         }
+        [Transaction]
         [Authorize(Roles ="HOST_STAFF")]
         [HttpPost("done")]
         public async Task<IActionResult> Done([FromBody] DoneOrderRequest request)
@@ -83,6 +88,7 @@ namespace BirthdayBlitzAPI.Controllers
 
             return GetResponse(response);
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpDelete("{id}")] 
         public async Task<IActionResult> Delete(Guid id)

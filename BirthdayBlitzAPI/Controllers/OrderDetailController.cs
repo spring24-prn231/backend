@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Common.Enums;
+﻿using BirthdayBlitzAPI.Attributes;
+using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
@@ -23,6 +24,7 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await _orderDetailService.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderDetailRequest request)
@@ -33,6 +35,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateOrderDetailRequest request)
@@ -43,6 +46,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)

@@ -33,6 +33,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Transaction]
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromBody]UpdateDishTypeRequest request)
@@ -43,6 +44,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [HttpDelete("{id}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)

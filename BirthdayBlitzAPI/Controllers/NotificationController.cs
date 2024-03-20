@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Common.Extensions;
+﻿using BirthdayBlitzAPI.Attributes;
+using BusinessObjects.Common.Extensions;
 using BusinessObjects.Models;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
@@ -27,6 +28,7 @@ namespace BirthdayBlitzAPI.Controllers
             }
             return Ok(new AppResponse<List<Notification>> { Data = response });
         }
+        [Transaction]
         [Authorize]
         [HttpPut("confirm-receive/{notiId}")]
         public async Task<IActionResult> Update(Guid notiId)

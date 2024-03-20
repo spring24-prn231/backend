@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BirthdayBlitzAPI.Attributes;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
@@ -27,6 +28,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
 
+        [Transaction]
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([FromBody] CreateElementTypeRequest request)
@@ -38,6 +40,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
 
+        [Transaction]
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromBody] UpdateElementTypeRequest request)
@@ -49,6 +52,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
 
+        [Transaction]
         [HttpDelete("{id}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)

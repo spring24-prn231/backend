@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Common.Enums;
+﻿using BirthdayBlitzAPI.Attributes;
+using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
@@ -22,6 +23,7 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await _voucherService.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
+        [Transaction]
         [HttpPost]
         [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Create([FromBody] CreateVoucherRequest request)
@@ -32,6 +34,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Transaction]
         [HttpPut]
         [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Update([FromBody] UpdateVoucherRequest request)
@@ -42,6 +45,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [HttpDelete("{id}")]
         [Authorize(Roles = "HOST_STAFF")]
         public async Task<IActionResult> Delete(Guid id)

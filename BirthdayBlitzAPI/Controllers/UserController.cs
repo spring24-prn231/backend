@@ -1,4 +1,5 @@
 ﻿using AutoFilterer.Extensions;
+using BirthdayBlitzAPI.Attributes;
 using BusinessObjects.Common.Constants;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Exceptions;
@@ -46,6 +47,7 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await queryRs.GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
+        [Transaction]
         [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
@@ -62,6 +64,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.DeleteSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Activate(Guid id)

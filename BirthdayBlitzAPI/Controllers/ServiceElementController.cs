@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BirthdayBlitzAPI.Attributes;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
@@ -25,8 +26,9 @@ namespace BirthdayBlitzAPI.Controllers
         {
             var response = await _service.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
-        }   
+        }
 
+        [Transaction]
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([FromForm] CreateServiceElementRequest request)
@@ -38,6 +40,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
 
+        [Transaction]
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Update([FromForm] UpdateServiceElementRequest request)
@@ -49,6 +52,7 @@ namespace BirthdayBlitzAPI.Controllers
             });
         }
 
+        [Transaction]
         [HttpDelete("{id}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(Guid id)

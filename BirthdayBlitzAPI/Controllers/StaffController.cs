@@ -1,4 +1,5 @@
 using AutoFilterer.Extensions;
+using BirthdayBlitzAPI.Attributes;
 using BusinessObjects.Common.Constants;
 using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Exceptions;
@@ -57,6 +58,7 @@ namespace BirthdayBlitzAPI.Controllers
             return Ok(response);
         }
 
+        [Transaction]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] CreateStaffRequest request)
         {
@@ -75,6 +77,7 @@ namespace BirthdayBlitzAPI.Controllers
             return GetResponse(response);
         }
 
+        [Transaction]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateStaffRequest request)
         {

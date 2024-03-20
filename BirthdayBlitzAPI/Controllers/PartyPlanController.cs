@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Common.Enums;
+﻿using BirthdayBlitzAPI.Attributes;
+using BusinessObjects.Common.Enums;
 using BusinessObjects.Common.Extensions;
 using BusinessObjects.Requests;
 using BusinessObjects.Responses;
@@ -26,6 +27,7 @@ namespace BirthdayBlitzAPI.Controllers
             var response = await _partyPlanService.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePartyPlanRequest request)
@@ -36,6 +38,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF")]
         [HttpPost("list")]
         public async Task<IActionResult> CreatePartyPlanByList([FromBody] List<CreatePartyPlanRequest> requests)
@@ -50,6 +53,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.CreateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdatePartyPlanRequest request)
@@ -60,6 +64,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpPut("list")]
         public async Task<IActionResult> UpdatePartyPlan([FromBody] List<UpdatePartyPlanRequest> requests)
@@ -74,6 +79,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "HOST_STAFF")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
@@ -84,6 +90,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.DeleteSuccess 
             });
         }
+        [Transaction]
         [Authorize(Roles = "ADMIN")]
         [HttpPost("approvement")]
         public async Task<IActionResult> ApprovePlan([FromBody] ApprovePlanRequest request)
@@ -94,6 +101,7 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.UpdateSuccess
             });
         }
+        [Transaction]
         [Authorize(Roles = "ADMIN")]
         [HttpPost("staff-assigment")]
         public async Task<IActionResult> AssignStaff([FromBody] AssignStaffPlanRequest request)
