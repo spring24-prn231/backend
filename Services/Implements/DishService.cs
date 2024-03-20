@@ -19,7 +19,7 @@ namespace Services.Implements
 
         public override async Task Create<TReq>(TReq entity)
         {
-            if (entity is CreateRoomRequest newEntityReq)
+            if (entity is CreateDishRequest newEntityReq)
             {
                 var newEntity = _mapper.Map<Dish>(newEntityReq);
                 var imageName = $"Dish_{newEntity.Id}.{Path.GetExtension(newEntityReq.ImageFile.FileName)}";

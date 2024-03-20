@@ -7,6 +7,7 @@ namespace BusinessObjects.Requests
         public Guid DishTypeId { get; set; }
         public string Name { get; set; }
         public IFormFile ImageFile { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
+        public decimal Price { get; set; }
     }
 }
