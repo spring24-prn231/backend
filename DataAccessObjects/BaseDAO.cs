@@ -32,7 +32,7 @@ namespace DataAccessObjects
             }
             return query;
         }
-        public virtual async Task Create(T entity)
+        public virtual async Task<T> Create(T entity)
         {
             for (int i=0;i<=2;i++)
             {
@@ -52,8 +52,9 @@ namespace DataAccessObjects
                     continue;
                 }
             }
+            return entity;
         }
-        public virtual async Task Update(T entity)
+        public virtual async Task<T> Update(T entity)
         {
             for (int i = 0; i <= 2; i++)
             {
@@ -74,6 +75,7 @@ namespace DataAccessObjects
                     continue;
                 }
             }
+            return entity;
         }
         public virtual async Task Delete(T entity)
         {

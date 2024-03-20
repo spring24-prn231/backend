@@ -54,24 +54,13 @@ namespace Services.Implements
         public async Task Create<TReq>(TReq entity, Guid userId)
         {
             var createOrderRequest = entity as CreateOrderRequest;
-            Service? newService = null;
             var newOrder = _mapper.Map<Order>(createOrderRequest);
             if (createOrderRequest?.NewService != null)
             {
-                newService = _mapper.Map<Service>(createOrderRequest?.NewService);
+                var newService = _mapper.Map<CreateServiceRequest>(createOrderRequest?.NewService);
                 newService.UserId = userId;
-                await _serviceService.Create(newService);
-                newOrder.ServiceId = newService?.Id;
-                //Create Menu
-                foreach (var dishId in createOrderRequest?.NewService.DishIds)
-                {
-                    await _menuService.Create(new Menu { DishId = dishId, ServiceId = newOrder.ServiceId });
-                }
-                //Create ServiceElementDetail
-                foreach (var serviceElementId in createOrderRequest?.NewService.ServiceElementIds)
-                {
-                    await _serviceElementDetailService.Create(new ServiceElementDetail { ServiceElementId = serviceElementId, ServiceId = newOrder.ServiceId.Value });
-                }
+                var serviceCreated = await _serviceService.Create(newService);
+                newOrder.ServiceId = serviceCreated.Id;
 
             }
             else if (createOrderRequest?.RecommendServiceId != null)
@@ -95,7 +84,7 @@ namespace Services.Implements
             return rs;
         }
 
-        public override async Task Update<TReq>(TReq entityRequest)
+        public override async Task<Order> Update<TReq>(TReq entityRequest)
         {
             if (entityRequest is UpdateOrderRequest orderUpdate)
             {
@@ -109,12 +98,16 @@ namespace Services.Implements
                         entity.Contract = contractLinks.FirstOrDefault();
                     }
                     _mapper.Map(entityRequest, entity);
-                    await _repo.Update(entity);
+                    return await _repo.Update(entity);
                 }
                 else
                 {
                     throw new NotFoundException();
                 }
+            }
+            else
+            {
+                throw new ValidationException();
             }
         }
     }

@@ -19,7 +19,7 @@ namespace Services.Implements
             _serviceElementDetailService = serviceElementDetailService;
         }
 
-        public override async Task Update<TReq>(TReq entityRequest)
+        public override async Task<Service> Update<TReq>(TReq entityRequest)
         {
             var request = entityRequest as UpdateServiceRequest;
             var service = await _repo.GetAll().Where(x => x.Id == request.Id).Include(x => x.Menus).Include(x => x.ServiceElementDetails).FirstOrDefaultAsync();
@@ -62,7 +62,7 @@ namespace Services.Implements
                         };
                         await _menuService.Create(menu);
                     }
-                    await _repo.Update(service);
+                    return await _repo.Update(service);
                 }
                 else
                 {
@@ -75,11 +75,11 @@ namespace Services.Implements
             }
         }
 
-        public override async Task Create<TReq>(TReq entityRequest)
+        public override async Task<Service> Create<TReq>(TReq entityRequest)
         {
             var request = entityRequest as CreateServiceRequest;
             var service = _mapper.Map<Service>(request);
-            await _repo.Create(service);
+            var response = await _repo.Create(service);
             foreach (var elementId in request.ServiceElementIds)
             {
                 await _serviceElementDetailService.Create(new ServiceElementDetail
@@ -96,6 +96,7 @@ namespace Services.Implements
                     DishId = dishId
                 });
             }
+            return response;
         }
     }
 }

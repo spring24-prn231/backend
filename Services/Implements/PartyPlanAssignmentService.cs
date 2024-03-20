@@ -13,19 +13,20 @@ namespace Services.Implements
 
         }
 
-        public override async Task Create<TReq>(TReq entity)
+        public override async Task<PartyPlanAssignment> Create<TReq>(TReq entity)
         {
             if (entity is AssignStaffPlanRequest entityList)
             {
                 foreach (var staffId in entityList.StaffIds)
                 {
-                    await _repo.Create(new PartyPlanAssignment
+                    return await _repo.Create(new PartyPlanAssignment
                     {
                         StaffId = staffId,
                         PartyPlanId = entityList.PlanId,
                     });
                 }
             }
+            return await base.Create<TReq>(entity);
         }
     }
 }

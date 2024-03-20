@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,23 @@ namespace BusinessObjects.Common.Extensions
         public static T GetPropertyValue<T>(this object src, string propName) 
         {
             return (T)src.GetType().GetProperty(propName)?.GetValue(src, null);
+        }
+        public static ICollection<string> GetNotNullVirtualCollection(this object src)
+        {
+            var rs = new List<string>();
+            var props = src.GetType().GetProperties();
+            foreach (var prop in props)
+            {
+                if (prop.GetMethod.IsVirtual && prop.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>)))
+                {
+                    var value = src.GetPropertyValue<ICollection>(prop.Name);
+                    if(value != null && value.Count > 0)
+                    {
+                        rs.Add(prop.Name);
+                    }
+                }
+            }
+            return rs;
         }
     }
 }

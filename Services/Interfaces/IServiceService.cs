@@ -5,6 +5,5 @@ namespace Services.Interfaces
 {
     public interface IServiceService : IBaseService<Service>
     {
-        Task Create<Treq>(Treq entityRequest) where Treq : class;
     }
 }

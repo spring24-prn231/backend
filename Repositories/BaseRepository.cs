@@ -16,9 +16,9 @@ namespace Repositories
         {
             _dao = dao;
         }
-        public virtual async Task Create(T entity)
+        public virtual async Task<T> Create(T entity)
         {
-            await _dao.Create(entity);
+            return await _dao.Create(entity);
         }
 
         public virtual async Task Delete(T entity)
@@ -42,9 +42,9 @@ namespace Repositories
             return await _dao.GetByIdNoTracking(id);
         }
 
-        public virtual async Task Update(T entity)
+        public virtual async Task<T> Update(T entity)
         {
-            await _dao.Update(entity);
+            return await _dao.Update(entity);
         }
     }
 }

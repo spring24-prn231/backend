@@ -9,7 +9,7 @@ namespace BirthdayBlitzAPI.MappingProfiles
         public OrderProfile()
         {
             CreateMap<CreateOrderRequest, Order>();
-            CreateMap<ServiceOrderCreate, Service>();
+            CreateMap<ServiceOrderCreate, CreateServiceRequest>();
             CreateMap<UpdateOrderRequest, Order>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));

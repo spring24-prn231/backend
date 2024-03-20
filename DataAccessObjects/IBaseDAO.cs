@@ -13,8 +13,8 @@ namespace DataAccessObjects
         IQueryable<T> GetAll(bool eager = true);
         Task<T?> GetById(Guid id);
         Task<T?> GetByIdNoTracking(Guid id);
-        Task Create(T entity);
-        Task Update(T entity);
+        Task<T> Create(T entity);
+        Task<T> Update(T entity);
         Task Delete(T entity);
     }   
 }

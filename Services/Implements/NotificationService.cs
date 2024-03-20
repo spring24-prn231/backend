@@ -21,13 +21,14 @@ namespace Services.Implements
             return _repo.GetAll().ApplyFilter(filter).AsNoTracking();
         }
 
-        public override async Task Create<TReq>(TReq entity)
+        public override async Task<Notification> Create<TReq>(TReq entity)
         {
             if (entity is Notification newEntity)
             {
                 newEntity.Status = false;
-                await base.Create(newEntity);
+                return await base.Create(newEntity);
             }
+            return await base.Create(entity);
         }
 
         public async Task Confirm(Guid id)

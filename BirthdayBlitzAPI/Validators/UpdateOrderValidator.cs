@@ -18,7 +18,6 @@ namespace BirthdayBlitzAPI.Validators
                 .Must(x => x.EventStart >= DateTime.Now.AddDays(1))
                 .WithMessage("Phải đặt tiệc trước 1 ngày");
             RuleFor(x => x.MaxGuest).GreaterThan(0).WithMessage("Số lượng khách tối đa phải lớn hơn 0");
-            RuleFor(x => x.Total).GreaterThan(0).WithMessage("Tổng chi phí dự kiến phải lớn hơn 0");
         }
     }
 }

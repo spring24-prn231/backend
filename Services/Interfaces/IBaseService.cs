@@ -15,8 +15,8 @@ namespace Services.Interfaces
         IQueryable<T> Get<TFilter>(TFilter filter) where TFilter : BasePaginationRequest;
         Task<T?> GetById(Guid id);
         Task<T?> GetByIdNoTracking(Guid id);
-        Task Create<TReq>(TReq entity) where TReq : class;
-        Task Update<TReq>(TReq entityRequest) where TReq: BaseUpdateRequest;
+        Task<T> Create<TReq>(TReq entity) where TReq : class;
+        Task<T> Update<TReq>(TReq entityRequest) where TReq: BaseUpdateRequest;
         Task Delete(Guid id);
     }
 }

@@ -16,12 +16,13 @@ namespace Services.Implements
             _orderService = orderService;
         }
 
-        public override async Task Create<TReq>(TReq entity)
+        public override async Task<OrderDetail> Create<TReq>(TReq entity)
         {
             if (entity is CreateOrderDetailRequest newEntityReq)
             {
                 var newEntity = _mapper.Map<OrderDetail>(newEntityReq);
-                await _repo.Create(newEntity);
+
+                var response = await _repo.Create(newEntity);
                 var order = await _orderService.GetByIdNoTracking(newEntity.OrderId.Value);
                 var orderUpdate = new UpdateOrderRequest
                 {
@@ -29,6 +30,7 @@ namespace Services.Implements
                     Id = newEntity.OrderId.Value,
                 };
                 await _orderService.Update(orderUpdate);
+                return response;
             }
             else
             {
@@ -37,7 +39,7 @@ namespace Services.Implements
 
         }
 
-        public override async Task Update<TReq>(TReq entityRequest)
+        public override async Task<OrderDetail> Update<TReq>(TReq entityRequest)
         {
             if (entityRequest is UpdateOrderDetailRequest orderDetailUpdate)
             {
@@ -47,12 +49,14 @@ namespace Services.Implements
                     var order = await _orderService.GetByIdNoTracking(entity.OrderId.Value);
                     var orderUpdate = new UpdateOrderRequest
                     {
-                        Total = order.Total - (entity.Price * entity.Amount)
+                        Total = order.Total - (entity.Price * entity.Amount),
+                        Id = entity.OrderId.Value,
                     };
                     _mapper.Map(entityRequest, entity);
                     order.Total += entity.Price * entity.Amount;
-                    await _repo.Update(entity);
+                    var response = await _repo.Update(entity);
                     await _orderService.Update(orderUpdate);
+                    return response;
                 }
                 else
                 {

@@ -20,7 +20,7 @@ namespace Services.Implements
             _repo = repository;
             _mapper = mapper;
         }
-        public virtual async Task Create<TReq>(TReq entity) where TReq : class
+        public virtual async Task<T> Create<TReq>(TReq entity) where TReq : class
         {
             T? newEntity = null;
             if (entity is not T)
@@ -31,7 +31,7 @@ namespace Services.Implements
             {
                 newEntity = entity as T;
             }
-            await _repo.Create(newEntity);
+            return await _repo.Create(newEntity);
         }
 
         public virtual async Task Delete(Guid id)
@@ -70,7 +70,7 @@ namespace Services.Implements
             return result?.Status == true ? result : null;
         }
 
-        public virtual async Task Update<TReq>(TReq entityRequest) where TReq : BaseUpdateRequest
+        public virtual async Task<T> Update<TReq>(TReq entityRequest) where TReq : BaseUpdateRequest
         {
             var entity = await _repo.GetById(entityRequest.Id);
             if (entity != null)
@@ -82,6 +82,7 @@ namespace Services.Implements
             {
                 throw new NotFoundException();
             }
+            return entity;
         }
     }
 }
