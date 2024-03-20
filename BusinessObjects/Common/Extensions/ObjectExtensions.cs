@@ -27,7 +27,7 @@ namespace BusinessObjects.Common.Extensions
                         var value = src.GetPropertyValue<ICollection>(prop.Name);
                         if (value != null && value.Count > 0)
                         {
-                            rs.Add($"{prop.Name} tồn tại dữ liệu");
+                            rs.Add(prop.Name);
                         }
                     }
                     catch (Exception ex)

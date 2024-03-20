@@ -12,6 +12,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces;
 using System.Security.Claims;
@@ -88,11 +89,10 @@ namespace BirthdayBlitzAPI.Controllers
             {
                 Message = MessageResponse.UpdateSuccess
             };
-            var user = await _userManager.FindByIdAsync(request.Id.ToString());
+            var user = await _userManager.Users.Include(x => x.StaffOrders).FirstOrDefaultAsync(x => x.Id == request.Id);
             if (user == null || !(await _userManager.IsInRoleAsync(user, UserRole.IMPLEMENT_STAFF.ToString()) || await _userManager.IsInRoleAsync(user, UserRole.HOST_STAFF.ToString())))
             {
-                throw new ValidationException(new List<FluentValidation.Results.ValidationFailure> { new FluentValidation.Results.ValidationFailure {
-                ErrorMessage = "Role không phù hợp"} });
+                throw new ValidationException(new List<FluentValidation.Results.ValidationFailure> { new FluentValidation.Results.ValidationFailure("Role", "Role Không phù hợp") });
             }
             if(await _userManager.IsInRoleAsync(user, UserRole.HOST_STAFF.ToString()) && request.Role != null && request.Role != UserRole.HOST_STAFF.ToString())
             {
@@ -176,19 +176,15 @@ namespace BirthdayBlitzAPI.Controllers
                 Message = MessageResponse.DeleteSuccess
             };
 
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await _userManager.Users.Include(x=>x.StaffOrders).FirstOrDefaultAsync(x=>x.Id == id);
             if (user == null || !(await _userManager.IsInRoleAsync(user, UserRole.IMPLEMENT_STAFF.ToString()) || await _userManager.IsInRoleAsync(user, UserRole.HOST_STAFF.ToString())))
             {
-                throw new ValidationException(new List<FluentValidation.Results.ValidationFailure> { new FluentValidation.Results.ValidationFailure {
-                ErrorMessage = "Role không phù hợp"} });
+                throw new ValidationException(new List<FluentValidation.Results.ValidationFailure> { new FluentValidation.Results.ValidationFailure("Role", "Role Không phù hợp")}) ;
             }
             var virtualExist = user.GetNotNullVirtualCollection();
             if (virtualExist.Any())
             {
-                throw new ValidationException(virtualExist.Select(x => new FluentValidation.Results.ValidationFailure
-                {
-                    ErrorMessage = x
-                }));
+                throw new ValidationException(virtualExist.Select(x => new FluentValidation.Results.ValidationFailure(x,$"{x} tồn tại dữ liệu")));
             }
             user.Status = false;
             await _userManager.UpdateAsync(user);

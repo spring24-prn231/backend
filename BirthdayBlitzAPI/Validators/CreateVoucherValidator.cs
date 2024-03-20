@@ -24,7 +24,9 @@ namespace BirthdayBlitzAPI.Validators
                 .WithMessage("Code chỉ được chứa ký tự và số");
             RuleFor(x => x.Discount)
                 .GreaterThanOrEqualTo(0)
-                .WithMessage("Discount phải lớn hơn 0đ");
+                .WithMessage("Discount phải lớn hơn 0")
+                .LessThanOrEqualTo(100)
+                .WithMessage("Phần trăm discount phải nhỏ hơn 100");
             RuleFor(x => x.MaximumValue)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("MaximumValue phải lớn hơn 0đ")

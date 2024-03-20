@@ -36,16 +36,14 @@ namespace Services.Implements
 
         public virtual async Task Delete(Guid id)
         {
-            var entity = await _repo.GetById(id);
+            var entity = await _repo.GetAll().FirstOrDefaultAsync(x=>x.Id == id);
             if (entity != null)
             {
+
                 var virtualExist = entity.GetNotNullVirtualCollection();
                 if (virtualExist.Any())
                 {
-                    throw new ValidationException(virtualExist.Select(x => new FluentValidation.Results.ValidationFailure
-                    {
-                        ErrorMessage = x
-                    }));
+                    throw new ValidationException(virtualExist.Select(x => new FluentValidation.Results.ValidationFailure(x, $"{x} tồn tại dữ liệu")));
                 }
                 await _repo.Delete(entity);
             }
