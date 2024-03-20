@@ -19,12 +19,20 @@ namespace BusinessObjects.Common.Extensions
             var props = src.GetType().GetProperties();
             foreach (var prop in props)
             {
-                if (prop.GetMethod.IsVirtual && prop.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>)))
+                if (prop.GetMethod.IsVirtual && prop.PropertyType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
                 {
-                    var value = src.GetPropertyValue<ICollection>(prop.Name);
-                    if(value != null && value.Count > 0)
+                    if (prop.PropertyType == typeof(string)) continue;
+                    try
                     {
-                        rs.Add(prop.Name);
+                        var value = src.GetPropertyValue<ICollection>(prop.Name);
+                        if (value != null && value.Count > 0)
+                        {
+                            rs.Add($"{prop.Name} tồn tại dữ liệu");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
                     }
                 }
             }

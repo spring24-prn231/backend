@@ -39,6 +39,14 @@ namespace Services.Implements
             var entity = await _repo.GetById(id);
             if (entity != null)
             {
+                var virtualExist = entity.GetNotNullVirtualCollection();
+                if (virtualExist.Any())
+                {
+                    throw new ValidationException(virtualExist.Select(x => new FluentValidation.Results.ValidationFailure
+                    {
+                        ErrorMessage = x
+                    }));
+                }
                 await _repo.Delete(entity);
             }
             else
