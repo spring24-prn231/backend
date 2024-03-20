@@ -52,7 +52,7 @@ namespace BirthdayBlitzAPI.Controllers
         [Transaction]
         [Authorize(Roles = "HOST_STAFF, ADMIN")]
         [HttpPut("list")]
-        public async Task<IActionResult> UpdatePartyPlan([FromBody] List<UpdatePartyPlanRequestList> request)
+        public async Task<IActionResult> UpdatePartyPlan([FromBody] UpdatePartyPlanRequestList request)
         {
             await _partyPlanService.UpdateList(request);
 

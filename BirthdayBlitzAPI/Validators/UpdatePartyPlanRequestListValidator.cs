@@ -6,32 +6,41 @@ using Services.Interfaces;
 
 namespace BirthdayBlitzAPI.Validators
 {
-    public class UpdatePartyPlanRequestListValidator : AbstractValidator<List<UpdatePartyPlanRequestList>>
+    public class UpdatePartyPlanRequestListValidator : AbstractValidator<UpdatePartyPlanRequestList>
     {
-        public UpdatePartyPlanRequestListValidator(IPartyPlanService partyPlanService)
+        private readonly IOrderService _orderService;
+        public UpdatePartyPlanRequestListValidator(IOrderService orderService)
         {
+            _orderService = orderService;
 
-            var updatePartyPlanValidator = new UpdatePartyPlanEachValidator(partyPlanService);
-            RuleForEach(x => x).SetValidator(updatePartyPlanValidator);
+            RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
+                .WithMessage("Order không tồn tại");
+
+            RuleForEach(x => x.PartyPlans).SetValidator(x => new UpdatePartyPlanEachValidator(x.OrderId, x.PartyPlans));
+
         }
     }
-    public class UpdatePartyPlanEachValidator : AbstractValidator<UpdatePartyPlanRequestList>
+    public class UpdatePartyPlanEachValidator : AbstractValidator<UpdatePartyPlanDetailRequest>
     {
-        private readonly IPartyPlanService _partyPlanService;
-        public UpdatePartyPlanEachValidator(IPartyPlanService partyPlanService)
+        private Guid? _orderId;
+        private List<UpdatePartyPlanDetailRequest>? _partyPlans;
+        public UpdatePartyPlanEachValidator(Guid? orderId = null, List<UpdatePartyPlanDetailRequest> partyPlans = null)
         {
-            _partyPlanService = partyPlanService;
+            _orderId = orderId;
+            _partyPlans = partyPlans;
 
-            RuleFor(x => new { x.TimeStart, x.TimeEnd, x.Id })
-                .MustAsync(async (x, cancellationToken) => await ValidateTimeRange(x.TimeStart, x.TimeEnd, x.Id.Value))
+            RuleFor(x => new { x.TimeStart, x.TimeEnd })
+                .Must(x => ValidateTimeRange(x.TimeStart, x.TimeEnd))
                 .WithMessage("Khoảng thời gian không hợp lệ");
+            RuleFor(x => x.TimeStart)
+                .GreaterThanOrEqualTo(x => DateTime.Now).WithMessage("Thời gian bắt đầu phải lớn hơn thời gian hiện tại");
+            _partyPlans = partyPlans;
         }
-        private async Task<bool> ValidateTimeRange(DateTime? timeStart, DateTime? timeEnd, Guid id)
+        private bool ValidateTimeRange(DateTime? timeStart, DateTime? timeEnd)
         {
-            var orderId = await _partyPlanService.GetAll().Where(x => x.Id == id).Select(x => x.OrderId).FirstOrDefaultAsync();
-            if (orderId == null) return true;
+            if (_orderId == null) return true;
             if (timeStart == null && timeEnd == null) return true;
-            return (!await _partyPlanService.GetAll().AnyAsync(x => x.OrderId == orderId && timeStart < x.TimeEnd && x.TimeStart < timeEnd)) && timeStart < timeEnd;
+            return (_partyPlans!.Where(x => timeStart < x.TimeEnd && x.TimeStart < timeEnd)).Count() <= 1 && timeStart < timeEnd;
         }
     }
 }

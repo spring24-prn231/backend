@@ -1,6 +1,7 @@
 using AutoFilterer.Swagger;
 using AutoMapper.Internal;
 using BirthdayBlitzAPI.Common.Extensions;
+using BirthdayBlitzAPI.Filters;
 using BirthdayBlitzAPI.Middlewares;
 using BusinessObjects.Models;
 using FluentValidation;
@@ -28,7 +29,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 });
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationAutoValidation(option =>
+{
+    option.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+});
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;

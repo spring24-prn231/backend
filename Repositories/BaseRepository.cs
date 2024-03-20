@@ -42,6 +42,11 @@ namespace Repositories
             return await _dao.GetByIdNoTracking(id);
         }
 
+        public async Task HardDelete(T entity)
+        {
+            await _dao.Delete(entity);
+        }
+
         public virtual async Task<T> Update(T entity)
         {
             return await _dao.Update(entity);

@@ -12,8 +12,8 @@ namespace BirthdayBlitzAPI.MappingProfiles
             CreateMap<UpdatePartyPlanRequest, PartyPlan>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-            CreateMap<UpdatePartyPlanRequestList, UpdatePartyPlanRequest>();
-            CreateMap<UpdatePartyPlanRequestList, CreatePartyPlanRequest>();
+            CreateMap<UpdatePartyPlanDetailRequest, UpdatePartyPlanRequest>();
+            CreateMap<UpdatePartyPlanDetailRequest, CreatePartyPlanRequest>();
         }
     }
 }

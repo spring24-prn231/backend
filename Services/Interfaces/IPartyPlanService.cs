@@ -5,6 +5,6 @@ namespace Services.Interfaces
 {
     public interface IPartyPlanService : IBaseService<PartyPlan>
     {
-        Task UpdateList(List<UpdatePartyPlanRequestList> request);
+        Task UpdateList(UpdatePartyPlanRequestList request);
     }
 }

@@ -8,15 +8,7 @@ namespace BusinessObjects.Requests
 {
     public class UpdatePartyPlanRequestList
     {
-        public Guid? Id { get; set; }
-
-        public DateTime? TimeStart { get; set; }
-
-        public DateTime? TimeEnd { get; set; }
-
-        public string? Description { get; set; }
-
-        public string? Note { get; set; }
-        public string? Feedback { get; set; }
+        public Guid OrderId { get; set; }
+        public List<UpdatePartyPlanDetailRequest> PartyPlans { get; set; } = null!;
     }
 }

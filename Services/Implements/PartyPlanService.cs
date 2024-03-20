@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using BusinessObjects.Common.Extensions;
+using BusinessObjects.Common.Exceptions;
 using BusinessObjects.Models;
 using BusinessObjects.Requests;
 using Repositories;
 using Services.Interfaces;
+using FluentValidation.Results;
 
 namespace Services.Implements
 {
@@ -12,20 +15,18 @@ namespace Services.Implements
         {
         }
 
-        public async Task UpdateList(List<UpdatePartyPlanRequestList> request)
+        public async Task UpdateList(UpdatePartyPlanRequestList request)
         {
-            foreach (var plan in request)
+            var partyPlansForOrder = _repo.GetAll().GetQueryStatusTrue().Where(x => x.OrderId == request.OrderId).ToList();
+            foreach (var plan in partyPlansForOrder)
             {
-                if (plan.Id.HasValue)
-                {
-                    var updateReq = _mapper.Map<UpdatePartyPlanRequest>(plan);
-                    await Update(updateReq);
-                }
-                else
-                {
-                    var insertReq = _mapper.Map<CreatePartyPlanRequest>(plan);
-                    await Create(insertReq);
-                }
+                await _repo.HardDelete(plan);
+            }
+            foreach (var plan in request.PartyPlans)
+            {
+                var insertReq = _mapper.Map<CreatePartyPlanRequest>(plan);
+                insertReq.OrderId = request.OrderId;
+                await Create(insertReq);
             }
         }
     }

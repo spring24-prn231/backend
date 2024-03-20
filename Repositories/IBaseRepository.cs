@@ -12,6 +12,7 @@ namespace Repositories
         Task<T> Create(T entity);
         Task<T> Update(T entity);
         Task Delete(T entity);
+        Task HardDelete(T entity);
         IQueryable<T> GetAll(bool eager = true);
         Task<T?> GetById(Guid id);
         Task<T?> GetByIdNoTracking(Guid id);
