@@ -19,7 +19,7 @@ namespace BirthdayBlitzAPI.Validators
             RuleFor(x => x.PhoneNumber)
                 .MustAsync(async (x, cancellationToken) => await _userManager.Users.Where(i => i.PhoneNumber == x).FirstOrDefaultAsync() == null)
                 .WithMessage("Số điện thoại đã tồn tại")
-                .Matches(new Regex(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}")).WithMessage("Số điện thoại không hợp lệ!");
+                .Matches(new Regex(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$")).WithMessage("Số điện thoại không hợp lệ!");
             RuleFor(x => x.Username)
                 .MustAsync(async (x, cancellationToken) => await _userManager.FindByNameAsync(x) == null)
                 .WithMessage("Username đã tồn tại");

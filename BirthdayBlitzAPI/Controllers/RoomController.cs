@@ -28,15 +28,26 @@ namespace BirthdayBlitzAPI.Controllers
         [HttpGet("anonymous")]
         public async Task<IActionResult> GetByAnonymous([FromQuery] GetRoomFilterRequest filter)
         {
+            filter.IsEager = true;
             var allRooms = _roomService.Get(filter).ToList();
             var response = new AppResponse<IEnumerable<Room>>();
             if (allRooms.Any())
             {
                 response.Data = allRooms.GroupBy(x => x.RoomTypeId).Select(y =>
                {
-                   var roomType = y.FirstOrDefault();
-                   roomType.Capacity = y.Max(x => x.Capacity);
-                   return roomType;
+                   var room = y.FirstOrDefault();
+                   room.Capacity = y.Max(x => x.Capacity);
+                   return new Room
+                   {
+                       Id = room.Id,
+                       RoomTypeId = room.RoomTypeId,
+                       Capacity = room.Capacity,
+                       Name = room.RoomType.Name,
+                       Description = room.RoomType.Description,
+                       Image = room.Image,
+                       Price = room.Price,
+                       Status = room.Status
+                   };
                 }).ToList();
             }
             response = await response.Data.GetPaginatedResponse(page: filter.Page, filter.PageSize);

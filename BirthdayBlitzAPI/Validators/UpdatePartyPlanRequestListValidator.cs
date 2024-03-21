@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Requests;
+﻿using BusinessObjects.Common.Constants;
+using BusinessObjects.Requests;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Services.Implements;
@@ -13,8 +14,12 @@ namespace BirthdayBlitzAPI.Validators
         {
             _orderService = orderService;
 
-            RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) => await _orderService.GetByIdNoTracking(x) != null)
-                .WithMessage("Order không tồn tại");
+            RuleFor(x => x.OrderId).MustAsync(async (x, cancellationToken) =>
+            {
+                var order = await _orderService.GetByIdNoTracking(x);
+                return order != null && order.ExecutionStatus == (int)OrderStatus.ASSIGNED;
+            })
+                .WithMessage("Order không hợp lệ");
 
             RuleForEach(x => x.PartyPlans).SetValidator(x => new UpdatePartyPlanEachValidator(x.OrderId, x.PartyPlans));
 

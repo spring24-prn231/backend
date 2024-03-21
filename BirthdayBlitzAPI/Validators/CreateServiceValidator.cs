@@ -34,7 +34,7 @@ namespace BirthdayBlitzAPI.Validators
                 .ChildRules(child => {
                     child.RuleFor(x => x)
                         .MustAsync(async (y, cancellationToken) => await _serviceElementService.GetByIdNoTracking(y) != null)
-                        .WithMessage("ServiceElement không tồn tại");
+                        .WithMessage("Dịch vụ không tồn tại");
                 });
             RuleForEach(x => x.DishIds)
                 .ChildRules(child => {
@@ -42,6 +42,26 @@ namespace BirthdayBlitzAPI.Validators
                         .MustAsync(async (y, cancellationToken) => await _dishService.GetByIdNoTracking(y) != null)
                         .WithMessage("Món ăn không tồn tại trong Menu");
                 });
+            RuleFor(x => x.DishIds)
+                .Must(dishes =>
+                {
+                    foreach (var dish in dishes)
+                    {
+                        if (dishes.Where(x => x == dish).Count() > 1) return false;
+                    }
+                    return true;
+                })
+                .WithMessage("Không được add các món ăn trùng nhau");
+            RuleFor(x => x.ServiceElementIds)
+                .Must(elements =>
+                {
+                    foreach (var element in elements)
+                    {
+                        if (elements.Where(x => x == element).Count() > 1) return false;
+                    }
+                    return true;
+                })
+                .WithMessage("Không được add các dịch vụ trùng nhau");
         }
     }
 }

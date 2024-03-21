@@ -32,15 +32,19 @@ namespace Services.Implements
                     var serviceElementDetails = await _serviceElementDetailService.GetAll().Where(x => x.ServiceId == service.Id).ToListAsync();
                     if (serviceElementDetails != null)
                     {
-                        var deleteTasks = serviceElementDetails.Select(serviceElementDetail => _serviceElementDetailService.Delete(serviceElementDetail.Id));
-                        await Task.WhenAll(deleteTasks);
+                        foreach (var detail in serviceElementDetails)
+                        {
+                            await _serviceElementDetailService.Delete(detail.Id);
+                        }
                     }
 
                     var menus = await _menuService.GetAll().Where(x => x.ServiceId == service.Id).ToListAsync();
                     if (menus != null)
                     {
-                        var deleteTasks = menus.Select(menu => _menuService.Delete(menu.Id));
-                        await Task.WhenAll(deleteTasks);
+                        foreach (var menu in menus)
+                        {
+                            await _menuService.Delete(menu.Id);
+                        }
                     }
 
                     //create new serviceelementdetails and menus

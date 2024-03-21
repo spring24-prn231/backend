@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BirthdayBlitzAPI.Attributes;
 using BusinessObjects.Common.Enums;
@@ -20,11 +21,17 @@ namespace BirthdayBlitzAPI.Controllers
         {
             _service = service;
         }
-
+        [Authorize(Roles ="ADMIN, HOST_STAFF")]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetServiceFilterRequest filter)
         {
             var response = await _service.Get(filter).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
+            return Ok(response);
+        }
+        [HttpGet("anonymous")]
+        public async Task<IActionResult> GetAnonymous([FromQuery] GetServiceFilterRequest filter)
+        {
+            var response = await _service.Get(filter).Where(x=>x.UserId == null).GetPaginatedResponse(page: filter.Page, pageSize: filter.PageSize);
             return Ok(response);
         }
 
