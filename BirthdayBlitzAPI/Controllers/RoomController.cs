@@ -46,7 +46,8 @@ namespace BirthdayBlitzAPI.Controllers
                        Description = room.RoomType.Description,
                        Image = room.Image,
                        Price = room.Price,
-                       Status = room.Status
+                       Status = room.Status,
+                       RoomType = room.RoomType,
                    };
                 }).ToList();
             }

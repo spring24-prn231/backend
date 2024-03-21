@@ -17,7 +17,9 @@ namespace BirthdayBlitzAPI.Validators
                .WithMessage("Id của đơn hàng này không tồn tại");
             RuleFor(x => x.Price)
                 .GreaterThan(0)
-                .WithMessage("Giá tiền phải lớn hơn 0");
+                .WithMessage("Giá tiền phải lớn hơn 0")
+                .GreaterThanOrEqualTo(x => x.Cost)
+                .WithMessage("Giá tiền phải lớn hơn hoặc bằng nhà vốn");
             RuleFor(x => x.Cost)
                 .GreaterThan(0)
                 .WithMessage("Tiền phải lớn hơn 0");
